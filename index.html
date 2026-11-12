@@ -93,7 +93,7 @@
 </head>
 <body class="flex flex-col items-center justify-between p-3 sm:p-5 md:p-6">
 
-  <!-- الشريط العلوي المحسّن للجوال (كبير وواضح وسهل اللمس) -->
+  <!-- الشريط العلوي المحسّن للجوال -->
   <header class="w-full max-w-6xl flex flex-col lg:flex-row items-center justify-between gap-4 mb-5 p-4 md:px-6 md:py-4 rounded-2xl border border-cyan-500/40 bg-slate-950/75 backdrop-blur-md shadow-lg shadow-cyan-500/10">
     
     <!-- الهوية والشعار -->
@@ -105,7 +105,7 @@
         <div>
           <div class="flex items-center gap-2 flex-wrap">
             <h1 class="text-xl md:text-2xl font-black tracking-wide text-white">نبيل النمر</h1>
-            <span class="font-tech text-xs md:text-sm px-3 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/60 text-cyan-300 font-bold">NAMER-IO</span>
+            <span dir="ltr" class="font-tech text-xs md:text-sm px-3 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/60 text-cyan-300 font-bold">NAMER-IO</span>
           </div>
           <p class="text-xs md:text-sm text-cyan-200/90 mt-0.5">مبتكر ومطور حلول NFC المدمجة بالأزياء والبطائق الذكية</p>
         </div>
@@ -129,7 +129,7 @@
     <div id="hud-container" class="hud-panel p-3.5 sm:p-5 md:p-8">
       
       <!-- شريط الحالة العلوي داخل الشاشة الهولوجرامية -->
-      <div class="flex items-center justify-between text-xs font-tech text-cyan-400/90 mb-4 pb-2.5 border-b border-cyan-500/25">
+      <div dir="ltr" class="flex items-center justify-between text-xs font-tech text-cyan-400/90 mb-4 pb-2.5 border-b border-cyan-500/25">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
           <span>SYS.PORTFOLIO // ACTIVE</span>
@@ -143,7 +143,7 @@
         <!-- العمود الأول (9:16): الفيديو التشغيلي 1.mp4.mp4 -->
         <div class="lg:col-span-4 flex flex-col gap-3">
           <div id="frame-1" onclick="selectItem(0)" class="holo-frame-916 active-frame group">
-            <div class="absolute top-3.5 inset-x-3.5 z-20 flex justify-between items-center text-xs font-tech text-white bg-black/55 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10">
+            <div dir="ltr" class="absolute top-3.5 inset-x-3.5 z-20 flex justify-between items-center text-xs font-tech text-white bg-black/55 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10">
               <span>9:16 LIVE DEMO</span>
               <span class="text-cyan-300 font-bold">NFC VERIFIED</span>
             </div>
@@ -153,7 +153,7 @@
 
             <div class="absolute bottom-3.5 inset-x-3.5 z-20 bg-slate-950/80 backdrop-blur-md border border-cyan-500/40 rounded-xl p-3 flex items-center justify-between">
               <button onclick="togglePlay(event)" class="text-cyan-300 hover:text-white text-sm font-bold px-2">⏯ تشغيل / إيقاف</button>
-              <span class="font-tech text-xs text-cyan-200">00:30 • HD</span>
+              <span dir="ltr" class="font-tech text-xs text-cyan-200">00:30 • HD</span>
             </div>
           </div>
           <div id="pod-1" class="chamfer-pod font-bold">
@@ -173,7 +173,7 @@
 
             <div class="absolute bottom-3.5 inset-x-3.5 z-20 bg-slate-950/80 backdrop-blur-md border border-cyan-500/40 rounded-xl p-3 flex items-center justify-between">
               <span class="text-sm text-amber-300 font-bold" id="frame-2-label">إصدار قصر المصمك — الرياض</span>
-              <span class="font-tech text-xs text-cyan-300">24.6311° N</span>
+              <span dir="ltr" class="font-tech text-xs text-cyan-300">24.6311° N</span>
             </div>
           </div>
           <div id="pod-2" class="chamfer-pod font-bold">
@@ -186,14 +186,15 @@
           <div class="frosted-white-card flex-1 p-5 md:p-6 flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between mb-4">
-                <span class="text-xs font-bold px-3 py-1 rounded-full bg-slate-900 text-cyan-300 font-tech">NFC-TECH</span>
+                <span dir="ltr" class="text-xs font-bold px-3 py-1 rounded-full bg-slate-900 text-cyan-300 font-tech">NFC-TECH</span>
                 <button onclick="openNfcModal()" class="text-xs font-bold text-blue-800 hover:text-blue-950 flex items-center gap-1 bg-blue-100 px-3 py-1.5 rounded-full">
                   <span>📡 محاكاة قراءة الشريحة</span>
                 </button>
               </div>
 
-              <div class="w-full h-48 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 mb-4 relative">
-                <img id="card-preview-img" src="model-back.png" alt="معاينة التفاصيل الخلفية" class="w-full h-full object-cover object-center" onerror="this.src='model-front.png'">
+              <!-- إظهار كامل الرسم الهندسي الذهبي لقصر المصمك بدون قص -->
+              <div class="w-full h-64 rounded-2xl overflow-hidden bg-slate-900 border border-slate-300 mb-4 relative">
+                <img id="card-preview-img" src="model-back.png" alt="معاينة التفاصيل الخلفية" class="w-full h-full object-cover object-top" onerror="this.src='model-front.png'">
                 <div class="absolute bottom-2 right-2 bg-slate-900/90 text-amber-300 text-xs font-bold px-3 py-1 rounded-lg">
                   نموذج عرض تقني • Portfolio
                 </div>
@@ -209,11 +210,11 @@
               <div id="detail-specs" class="space-y-2.5 mb-5">
                 <div class="flex items-center justify-between text-xs md:text-sm bg-slate-100 px-3.5 py-2.5 rounded-xl">
                   <span class="text-slate-500 font-semibold">نوع الشريحة:</span>
-                  <span class="font-tech font-bold text-slate-800">NTAG215 / Cloud Auth</span>
+                  <span dir="ltr" class="font-tech font-bold text-slate-800">NTAG215 / Cloud Auth</span>
                 </div>
                 <div class="flex items-center justify-between text-xs md:text-sm bg-slate-100 px-3.5 py-2.5 rounded-xl">
                   <span class="text-slate-500 font-semibold">التوثيق الجغرافي:</span>
-                  <span class="font-tech font-bold text-slate-800">24.6311° N, 46.7133° E</span>
+                  <span dir="ltr" class="font-tech font-bold text-slate-800">24.6311° N, 46.7133° E</span>
                 </div>
                 <div class="flex items-center justify-between text-xs md:text-sm bg-slate-100 px-3.5 py-2.5 rounded-xl">
                   <span class="text-slate-500 font-semibold">الغرض من العرض:</span>
@@ -245,7 +246,7 @@
   <!-- تذييل الصفحة الرسمي -->
   <footer class="w-full max-w-6xl mt-6 px-4 py-4 rounded-2xl border border-cyan-500/25 bg-slate-950/60 text-center md:flex md:items-center md:justify-between text-xs md:text-sm text-cyan-200/80">
     <div>© 2026 نبيل النمر (NAMER-IO) — جميع الحقوق الفكرية والتقنية محفوظة</div>
-    <div class="mt-2 md:mt-0 flex items-center justify-center gap-4 font-tech">
+    <div dir="ltr" class="mt-2 md:mt-0 flex items-center justify-center gap-4 font-tech">
       <a href="mailto:Ibn.alnamer@gmail.com" class="hover:text-cyan-300">Ibn.alnamer@gmail.com</a>
       <span>•</span>
       <a href="https://wa.me/966502777884" target="_blank" class="hover:text-cyan-300">+966 50 277 7884</a>
@@ -262,7 +263,7 @@
       </div>
       
       <h3 class="text-xl font-black text-white mb-1">تمت قراءة شريحة NFC بنجاح</h3>
-      <p class="text-xs text-cyan-300 font-tech mb-4">CLOUD OWNERSHIP CERTIFICATE • VERIFIED</p>
+      <p dir="ltr" class="text-xs text-cyan-300 font-tech mb-4">CLOUD OWNERSHIP CERTIFICATE • VERIFIED</p>
       
       <div class="bg-slate-950/90 border border-amber-400/40 rounded-2xl p-4 text-right space-y-2.5 mb-5">
         <div class="flex justify-between text-sm">
@@ -271,7 +272,7 @@
         </div>
         <div class="flex justify-between text-sm">
           <span class="text-slate-400">الرقم التسلسلي:</span>
-          <span class="text-cyan-300 font-tech">NAMER-MSM-0001</span>
+          <span dir="ltr" class="text-cyan-300 font-tech">NAMER-MSM-0001</span>
         </div>
         <div class="flex justify-between text-sm">
           <span class="text-slate-400">المطور والمبتكر:</span>
