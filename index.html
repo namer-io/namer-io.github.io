@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>نبيل النمر | NAMER-IO — اختصاصي تسويق ومبتكر الأزياء والبطائق الذكية</title>
+  <title>نبيل النمر | NAMER-IO — مبتكر ومطور تقنيات NFC المدمجة بالأزياء والأنظمة التفاعلية</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
   <style>
@@ -46,7 +46,6 @@
       pointer-events: none;
     }
 
-    /* الحاوية الرئيسية مع حزمة ضوئية محيطة متحركة */
     .spatial-deck {
       position: relative;
       z-index: 10;
@@ -61,7 +60,6 @@
       overflow: hidden;
     }
 
-    /* شعاع ضوئي متحرك يعبر حافة المنصة */
     .spatial-deck::before {
       content: '';
       position: absolute;
@@ -78,7 +76,6 @@
       100% { left: 120%; }
     }
 
-    /* زوايا HUD المضيئة */
     .hud-bracket {
       position: absolute;
       width: 22px;
@@ -92,7 +89,6 @@
     .hud-bl { bottom: 10px; left: 10px; border-bottom: 2px solid; border-left: 2px solid; border-bottom-left-radius: 8px; }
     .hud-br { bottom: 10px; right: 10px; border-bottom: 2px solid; border-right: 2px solid; border-bottom-right-radius: 8px; }
 
-    /* إطارات العرض الطولية 9:16 الصافية */
     .holo-viewport {
       aspect-ratio: 9 / 16;
       border-radius: 24px;
@@ -114,7 +110,6 @@
         inset 0 0 18px rgba(212, 175, 55, 0.2);
     }
 
-    /* كبسولات القياس السفلية المشطوفة */
     .telemetry-pod {
       background: linear-gradient(90deg, rgba(0, 243, 255, 0.12), rgba(212, 175, 55, 0.12), rgba(0, 243, 255, 0.12));
       border: 1px solid rgba(0, 243, 255, 0.4);
@@ -126,7 +121,6 @@
       text-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
     }
 
-    /* البطاقة الكريستالية الثلجية (مدمجة بانسجام مع الإضاءة الفضائية) */
     .crystal-console {
       background: linear-gradient(165deg, rgba(240, 249, 255, 0.93) 0%, rgba(219, 240, 254, 0.88) 55%, rgba(235, 248, 255, 0.94) 100%);
       backdrop-filter: blur(16px);
@@ -213,7 +207,7 @@
   <div class="nebula-glow"></div>
 
   <!-- شريط القيادة العلوي (Command Header) -->
-  <header class="relative z-10 w-full max-w-6xl flex flex-col lg:flex-row items-center justify-between gap-4 mb-4 p-4 md:px-6 md:py-4 rounded-3xl border border-cyan-400/40 bg-slate-950/80 backdrop-blur-xl shadow-[0_0_35px_rgba(0,243,255,0.15)]">
+  <header class="relative z-10 w-full max-w-6xl flex flex-col lg:flex-row items-center justify-between gap-4 mb-5 p-4 md:px-6 md:py-4 rounded-3xl border border-cyan-400/40 bg-slate-950/80 backdrop-blur-xl shadow-[0_0_35px_rgba(0,243,255,0.15)]">
     
     <!-- الهوية والمفاعل الضوئي -->
     <div class="w-full lg:w-auto flex items-center justify-between gap-3">
@@ -228,7 +222,7 @@
             <h1 class="text-xl md:text-2xl font-black tracking-wide text-white">نبيل النمر</h1>
             <span dir="ltr" class="font-tech text-xs md:text-sm px-3 py-0.5 rounded-full bg-gradient-to-r from-cyan-500/20 to-amber-500/20 border border-cyan-400/60 text-cyan-200 font-bold tracking-wider">NAMER-IO</span>
           </div>
-          <p class="text-xs md:text-sm text-amber-300/95 font-bold mt-0.5">اختصاصي تسويق • 25 عاماً في مجال الملابس الرجالية</p>
+          <p class="text-xs md:text-sm text-cyan-200/90 mt-0.5">مبتكر ومطور تقنيات NFC المدمجة بالأزياء والأنظمة التفاعلية</p>
         </div>
       </div>
 
@@ -250,22 +244,6 @@
     </div>
 
   </header>
-
-  <!-- شريط المؤشرات والخبرة (Live Executive Telemetry Strip) -->
-  <section class="relative z-10 w-full max-w-6xl mb-4 grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-    <div class="px-4 py-2.5 rounded-2xl border border-amber-400/35 bg-slate-950/75 backdrop-blur-md flex items-center justify-between">
-      <span class="text-xs text-slate-300">الخبرة التسويقية:</span>
-      <span class="text-xs md:text-sm font-black text-amber-300">25+ عاماً في الأزياء الرجالية</span>
-    </div>
-    <div class="px-4 py-2.5 rounded-2xl border border-cyan-400/35 bg-slate-950/75 backdrop-blur-md flex items-center justify-between">
-      <span class="text-xs text-slate-300">نطاق المشروع:</span>
-      <span class="text-xs md:text-sm font-black text-cyan-300">كل المملكة (انطلاقاً من الرياض)</span>
-    </div>
-    <div class="px-4 py-2.5 rounded-2xl border border-emerald-400/35 bg-slate-950/75 backdrop-blur-md flex items-center justify-between">
-      <span class="text-xs text-slate-300">التقنية المبتكرة:</span>
-      <span class="text-xs md:text-sm font-black text-emerald-300">بطاقة NFC مدمجة بالسدو</span>
-    </div>
-  </section>
 
   <!-- المنصة الهولوجرامية الفضائية (Spatial HUD Stage) -->
   <main class="relative z-10 w-full max-w-6xl my-auto">
@@ -519,8 +497,24 @@
     <div class="holo-emitter-base w-4/5 mx-auto mt-1"></div>
   </main>
 
+  <!-- شريط المؤشرات والخبرة (تم نقله إلى أسفل المنصة الهولوجرامية في موقعه الصحيح) -->
+  <section class="relative z-10 w-full max-w-6xl mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
+    <div class="px-4 py-3 rounded-2xl border border-amber-400/35 bg-slate-950/75 backdrop-blur-md flex items-center justify-between shadow-md">
+      <span class="text-xs text-slate-300">الخبرة التسويقية:</span>
+      <span class="text-xs md:text-sm font-black text-amber-300">25+ عاماً في الأزياء الرجالية</span>
+    </div>
+    <div class="px-4 py-3 rounded-2xl border border-cyan-400/35 bg-slate-950/75 backdrop-blur-md flex items-center justify-between shadow-md">
+      <span class="text-xs text-slate-300">نطاق المشروع:</span>
+      <span class="text-xs md:text-sm font-black text-cyan-300">كل المملكة (انطلاقاً من الرياض)</span>
+    </div>
+    <div class="px-4 py-3 rounded-2xl border border-emerald-400/35 bg-slate-950/75 backdrop-blur-md flex items-center justify-between shadow-md">
+      <span class="text-xs text-slate-300">التقنية المبتكرة:</span>
+      <span class="text-xs md:text-sm font-black text-emerald-300">بطاقة NFC مدمجة بالسدو</span>
+    </div>
+  </section>
+
   <!-- تذييل الصفحة الرسمي -->
-  <footer class="relative z-10 w-full max-w-6xl mt-6 px-4 py-4 rounded-2xl border border-cyan-500/30 bg-slate-950/75 backdrop-blur-md text-center flex flex-col md:flex-row items-center justify-between gap-2.5 text-xs md:text-sm text-cyan-200/85">
+  <footer class="relative z-10 w-full max-w-6xl mt-4 px-4 py-4 rounded-2xl border border-cyan-500/30 bg-slate-950/75 backdrop-blur-md text-center flex flex-col md:flex-row items-center justify-between gap-2.5 text-xs md:text-sm text-cyan-200/85">
     <div>© 2026 نبيل النمر (NAMER-IO) — اختصاصي تسويق في مجال الملابس الرجالية</div>
     <div dir="ltr" class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 font-tech">
       <a href="mailto:Ibn.alnamer@gmail.com" class="hover:text-cyan-300 whitespace-nowrap">Ibn.alnamer@gmail.com</a>
@@ -630,7 +624,6 @@
       if (audioEnabled) playClick();
     }
 
-    // تنزيل بطاقة التواصل المباشرة (vCard)
     function downloadVCard() {
       playNfcScanSound();
       const vcard = [
@@ -656,7 +649,6 @@
       URL.revokeObjectURL(url);
     }
 
-    // خلفية الفضاء والجزيئات الكمومية
     const canvas = document.getElementById('quantum-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
