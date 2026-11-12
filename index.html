@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نبيل النمر | NAMER-IO — مختبر الابتكار وتقنيات NFC</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --holo-cyan: #00f3ff;
+      --holo-gold: #d4af37;
+      --holo-bg: #030914;
+      --glass-border: rgba(0, 243, 255, 0.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background: radial-gradient(circle at 50% 15%, #0a1f3d 0%, #030914 65%, #010409 100%);
+      color: #e2f1ff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .font-tech { font-family: 'Orbitron', sans-serif; }
+    
+    /* إطار الواجهة الهولوجرامية الثلاثية */
+    .hud-stage {
+      perspective: 1600px;
+    }
+    .hud-panel {
+      background: linear-gradient(145deg, rgba(8, 25, 48, 0.65), rgba(3, 11, 24, 0.85));
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 0 40px rgba(0, 243, 255, 0.12), inset 0 0 25px rgba(0, 243, 255, 0.06);
+      border-radius: 28px;
+      position: relative;
+      transition: transform 0.25s ease-out;
+    }
+
+    /* إطارات العرض الطولية 9:16 الصافية بدون أي خطوط تشوش على الصور */
+    .holo-frame-916 {
+      aspect-ratio: 9 / 16;
+      border-radius: 22px;
+      border: 1.5px solid rgba(0, 243, 255, 0.55);
+      box-shadow: 0 0 25px rgba(0, 243, 255, 0.25), inset 0 0 12px rgba(0, 243, 255, 0.2);
+      background: #040d1a;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .holo-frame-916:hover, .holo-frame-916.active-frame {
+      border-color: var(--holo-gold);
+      box-shadow: 0 0 32px rgba(212, 175, 55, 0.45);
+      transform: translateY(-4px);
+    }
+
+    /* الكبسولات المشطوفة أسفل الإطارات */
+    .chamfer-pod {
+      background: linear-gradient(90deg, rgba(0, 243, 255, 0.14), rgba(0, 120, 180, 0.08));
+      border: 1px solid rgba(0, 243, 255, 0.4);
+      clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0 50%);
+      padding: 10px 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #a5f3fc;
+      box-shadow: 0 4px 15px rgba(0, 243, 255, 0.15);
+    }
+
+    /* البطاقة البيضاء الزجاجية عالية التباين */
+    .frosted-white-card {
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.96) 0%, rgba(235, 246, 255, 0.92) 100%);
+      color: #0f172a;
+      border-radius: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 30px rgba(0, 243, 255, 0.3);
+    }
+
+    /* نبض شريحة NFC */
+    @keyframes pulseRing {
+      0% { transform: scale(0.85); opacity: 0.9; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+    .nfc-pulse::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 2px solid #00f3ff;
+      animation: pulseRing 2s infinite;
+    }
+
+    /* قاعدة الإسقاط الضوئي السفلية */
+    .projector-beam {
+      height: 18px;
+      background: radial-gradient(ellipse at center, rgba(0, 243, 255, 0.5) 0%, transparent 70%);
+      filter: blur(4px);
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-between p-3 md:p-6">
+
+  <!-- الشريط العلوي للهوية والتنقل -->
+  <header class="w-full max-w-6xl flex flex-wrap items-center justify-between gap-4 mb-5 px-4 py-3 rounded-2xl border border-cyan-500/30 bg-slate-950/60 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-700 flex items-center justify-center shadow-lg shadow-cyan-500/30 relative nfc-pulse">
+        <span class="font-tech font-black text-slate-950 text-lg">N</span>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="text-lg md:text-xl font-black tracking-wide text-white">نبيل النمر</h1>
+          <span class="font-tech text-xs px-2.5 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/50 text-cyan-300 font-bold">NAMER-IO</span>
+        </div>
+        <p class="text-xs text-cyan-200/80">مبتكر ومطور حلول NFC المدمجة بالأزياء والبطائق الذكية</p>
+      </div>
+    </div>
+
+    <!-- أزرار تبديل الأقسام -->
+    <div class="flex items-center gap-2 bg-slate-900/90 p-1.5 rounded-xl border border-cyan-500/30">
+      <button id="tab-fashion" onclick="switchSection('fashion')" class="px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/40">
+        الأزياء المدمجة بـ NFC
+      </button>
+      <button id="tab-cards" onclick="switchSection('cards')" class="px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all text-cyan-200 hover:text-white">
+        البطائق الذكية والحلول
+      </button>
+    </div>
+
+    <!-- زر معاينة سريعة للصور من الجهاز -->
+    <div class="flex items-center gap-2">
+      <label class="cursor-pointer px-3 py-2 rounded-xl text-xs font-bold border border-amber-400/50 bg-amber-500/10 text-amber-300 hover:bg-amber-500/20 transition flex items-center gap-1.5">
+        <span>تجربة صورك محلياً</span>
+        <input type="file" accept="image/*,video/*" multiple class="hidden" onchange="handleLocalUpload(event)">
+      </label>
+    </div>
+  </header>
+
+  <!-- المنصة الهولوجرامية الرئيسية -->
+  <main class="hud-stage w-full max-w-6xl my-auto">
+    <div id="hud-container" class="hud-panel p-4 md:p-8">
+      
+      <!-- شريط الحالة العلوي داخل الشاشة الهولوجرامية -->
+      <div class="flex items-center justify-between text-[11px] font-tech text-cyan-400/80 mb-5 pb-2 border-b border-cyan-500/20">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>SYS.PORTFOLIO // NFC-CORE ACTIVE</span>
+        </div>
+        <div class="hidden sm:block text-amber-300/90">9:16 SPATIAL SHOWCASE</div>
+        <div>RIYADH • SAUDI ARABIA</div>
+      </div>
+
+      <!-- الشبكة الثلاثية المطابقة للتصميم المرجعي -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+
+        <!-- العمود الأول (9:16): الفيديو التشغيلي / العرض الأول -->
+        <div class="lg:col-span-4 flex flex-col gap-3">
+          <div id="frame-1" onclick="selectItem(0)" class="holo-frame-916 active-frame group">
+            <!-- شريط علوي يحاكي واجهة الجوال الهولوجرامية -->
+            <div class="absolute top-3 inset-x-3 z-20 flex justify-between items-center text-[10px] font-tech text-white/90 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full">
+              <span>9:16 LIVE DEMO</span>
+              <span class="text-cyan-300">NFC VERIFIED</span>
+            </div>
+
+            <!-- مشغل الفيديو الرئيسي 1.mp4 -->
+            <video id="media-video-1" src="1.mp4" autoplay loop muted playsinline class="w-full h-full object-cover" onerror="fallbackMedia('video')"></video>
+            <img id="media-fallback-1" src="2.png" alt="عرض تفاعلي" class="hidden w-full h-full object-cover" onerror="this.style.display='none'">
+
+            <!-- شريط تحكم سفلي أنيق داخل الإطار -->
+            <div class="absolute bottom-3 inset-x-3 z-20 bg-slate-950/75 backdrop-blur-md border border-cyan-500/30 rounded-xl p-2.5 flex items-center justify-between">
+              <button onclick="togglePlay(event)" class="text-cyan-300 hover:text-white text-xs font-bold px-2">⏯ تشغيل/إيقاف</button>
+              <span class="font-tech text-[10px] text-cyan-200">00:30 • HD</span>
+            </div>
+          </div>
+          <div id="pod-1" class="chamfer-pod font-semibold">
+            تجربة المسح المباشر لشريحة NFC في شريط السدو
+          </div>
+        </div>
+
+        <!-- العمود الثاني (9:16): التصميم الأمامي والخلفي -->
+        <div class="lg:col-span-4 flex flex-col gap-3">
+          <div id="frame-2" onclick="selectItem(1)" class="holo-frame-916 group">
+            <div class="absolute top-3 inset-x-3 z-20 flex justify-between items-center text-[10px] font-tech text-white/90 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full">
+              <span id="view-badge">FRONT • التصميم الأمامي</span>
+              <button onclick="toggleShirtSide(event)" class="text-amber-300 underline font-cairo font-bold">قلب التصميم ↻</button>
+            </div>
+
+            <!-- الصورة الأمامية 2.png والخلفية 3.png -->
+            <img id="media-img-2" src="2.png" alt="مجموعة اكتشف الرياض - قصر المصمك" class="w-full h-full object-cover transition-all duration-500" onerror="drawSvgFallback(this)">
+
+            <div class="absolute bottom-3 inset-x-3 z-20 bg-slate-950/75 backdrop-blur-md border border-cyan-500/30 rounded-xl p-2.5 flex items-center justify-between">
+              <span class="text-xs text-amber-300 font-bold" id="frame-2-label">إصدار قصر المصمك — الرياض</span>
+              <span class="font-tech text-[10px] text-cyan-300">24.6311° N</span>
+            </div>
+          </div>
+          <div id="pod-2" class="chamfer-pod font-semibold">
+            توثيق الملكية السحابية والهوية التراثية المدمجة
+          </div>
+        </div>
+
+        <!-- العمود الثالث: البطاقة البيضاء الزجاجية (مواصفات الابتكار والتواصل النظامي) -->
+        <div class="lg:col-span-4 flex flex-col gap-3">
+          <div class="frosted-white-card flex-1 p-5 md:p-6 flex flex-col justify-between">
+            <div>
+              <!-- شريط علوي داخل البطاقة البيضاء -->
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-bold px-3 py-1 rounded-full bg-slate-900 text-cyan-300 font-tech">NFC-TECH</span>
+                <button onclick="openNfcModal()" class="text-xs font-bold text-blue-700 hover:text-blue-900 flex items-center gap-1 bg-blue-100 px-3 py-1 rounded-full">
+                  <span>📡 محاكاة قراءة الشريحة</span>
+                </button>
+              </div>
+
+              <!-- معاينة مصغرة للتصميم المختار -->
+              <div class="w-full h-44 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 mb-4 relative">
+                <img id="card-preview-img" src="3.png" alt="معاينة التفاصيل" class="w-full h-full object-cover object-center" onerror="this.src='2.png'">
+                <div class="absolute bottom-2 right-2 bg-slate-900/85 text-amber-300 text-[11px] font-bold px-2.5 py-1 rounded-lg">
+                  نموذج عرض تقني • Portfolio
+                </div>
+              </div>
+
+              <!-- العنوان والوصف -->
+              <h2 id="detail-title" class="text-xl font-black text-slate-900 mb-1.5">
+                مجموعة اكتشف الرياض — إصدار قصر المصمك
+              </h2>
+              <p id="detail-desc" class="text-xs leading-relaxed text-slate-600 mb-4">
+                أول ابتكار لدمج شرائح NFC غير التلامسية في الأزياء السعودية؛ يجمع بين قصة البوكسي الفاخرة ونقشة السدو النجدية وشهادة توثيق ملكية رقمية سحابية لكل قطعة.
+              </p>
+
+              <!-- المواصفات التقنية -->
+              <div id="detail-specs" class="space-y-2 mb-5">
+                <div class="flex items-center justify-between text-xs bg-slate-100 px-3 py-2 rounded-xl">
+                  <span class="text-slate-500 font-semibold">نوع الشريحة:</span>
+                  <span class="font-tech font-bold text-slate-800">NTAG215 / Cloud Auth</span>
+                </div>
+                <div class="flex items-center justify-between text-xs bg-slate-100 px-3 py-2 rounded-xl">
+                  <span class="text-slate-500 font-semibold">التوثيق الجغرافي:</span>
+                  <span class="font-tech font-bold text-slate-800">24.6311° N, 46.7133° E</span>
+                </div>
+                <div class="flex items-center justify-between text-xs bg-slate-100 px-3 py-2 rounded-xl">
+                  <span class="text-slate-500 font-semibold">الغرض من العرض:</span>
+                  <span class="font-bold text-emerald-700">نموذج ابتكار وتطوير مشاريع</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- أزرار التفاعل والتواصل (بدون أسعار بيع) -->
+            <div class="space-y-2.5 pt-2 border-t border-slate-200">
+              <button onclick="openNfcModal()" class="w-full py-2.5 rounded-xl font-bold text-xs bg-slate-900 text-cyan-300 hover:bg-slate-800 transition flex items-center justify-center gap-2 shadow">
+                <span>تجربة شهادة التوثيق السحابية (Live Demo)</span>
+              </button>
+              <a id="whatsapp-btn" href="https://wa.me/966502777884?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%20%D8%A3%D8%AE%20%D9%86%D8%A8%D9%8A%D9%84%D8%8C%20%D8%A7%D8%B7%D9%84%D8%B9%D8%AA%20%D8%B9%D9%84%D9%89%20%D9%85%D9%86%D8%B5%D8%AA%D9%83%20NAMER-IO%20%D9%88%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AA%D8%B7%D9%88%D9%8A%D8%B1%20%D9%85%D8%B4%D8%B1%D9%88%D8%B9%20NFC." target="_blank" class="w-full py-3 rounded-xl font-black text-sm bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:from-emerald-500 hover:to-teal-500 transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30">
+                <span>تواصل لطلب استشارة أو تنفيذ مشروع</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="chamfer-pod font-semibold">
+            منصة أعمال شخصية للتعريف بالابتكارات والاستشارات التقنية
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- قاعدة الإسقاط الضوئي السفلية -->
+    <div class="projector-beam w-3/4 mx-auto mt-1"></div>
+  </main>
+
+  <!-- تذييل الصفحة الرسمي -->
+  <footer class="w-full max-w-6xl mt-6 px-4 py-3 rounded-2xl border border-cyan-500/20 bg-slate-950/50 text-center md:flex md:items-center md:justify-between text-xs text-cyan-200/70">
+    <div>© 2026 نبيل النمر (NAMER-IO) — جميع الحقوق الفكرية والتقنية محفوظة</div>
+    <div class="mt-1 md:mt-0 flex items-center justify-center gap-4 font-tech">
+      <a href="mailto:Ibn.alnamer@gmail.com" class="hover:text-cyan-300">Ibn.alnamer@gmail.com</a>
+      <span>•</span>
+      <a href="https://wa.me/966502777884" target="_blank" class="hover:text-cyan-300">+966 50 277 7884</a>
+    </div>
+  </footer>
+
+  <!-- نافذة محاكاة قراءة شريحة NFC التفاعلية -->
+  <div id="nfc-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-md p-4">
+    <div class="max-w-md w-full rounded-3xl border border-cyan-400/50 bg-slate-900 p-6 text-center shadow-2xl shadow-cyan-500/20 relative">
+      <button onclick="closeNfcModal()" class="absolute top-4 left-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      
+      <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-cyan-500/20 border border-cyan-400 flex items-center justify-center">
+        <span class="text-3xl">📲</span>
+      </div>
+      
+      <h3 class="text-lg font-black text-white mb-1">تمت قراءة شريحة NFC بنجاح</h3>
+      <p class="text-xs text-cyan-300 font-tech mb-4">CLOUD OWNERSHIP CERTIFICATE • VERIFIED</p>
+      
+      <div class="bg-slate-950/90 border border-amber-400/40 rounded-2xl p-4 text-right space-y-2 mb-5">
+        <div class="flex justify-between text-xs">
+          <span class="text-slate-400">الإصدار:</span>
+          <span class="text-amber-300 font-bold" id="modal-edition">اكتشف الرياض — قصر المصمك</span>
+        </div>
+        <div class="flex justify-between text-xs">
+          <span class="text-slate-400">الرقم التسلسلي:</span>
+          <span class="text-cyan-300 font-tech">NAMER-MSM-0001</span>
+        </div>
+        <div class="flex justify-between text-xs">
+          <span class="text-slate-400">المطور والمبتكر:</span>
+          <span class="text-white font-bold">نبيل النمر | NAMER-IO</span>
+        </div>
+        <div class="flex justify-between text-xs">
+          <span class="text-slate-400">حالة التوثيق:</span>
+          <span class="text-emerald-400 font-bold">● موثق سحابياً وأصلي 100%</span>
+        </div>
+      </div>
+
+      <button onclick="closeNfcModal()" class="w-full py-2.5 rounded-xl bg-cyan-500 text-slate-950 font-black text-sm hover:bg-cyan-400 transition">
+        إغلاق المحاكاة
+      </button>
+    </div>
+  </div>
+
+  <script>
+    let currentSide = 'front';
+    let currentSection = 'fashion';
+
+    // التبديل بين قسم الأزياء المدمجة وقسم البطائق الذكية
+    function switchSection(section) {
+      currentSection = section;
+      const tabFashion = document.getElementById('tab-fashion');
+      const tabCards = document.getElementById('tab-cards');
+
+      if (section === 'fashion') {
+        tabFashion.className = 'px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/40';
+        tabCards.className = 'px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all text-cyan-200 hover:text-white';
+        
+        document.getElementById('detail-title').textContent = 'مجموعة اكتشف الرياض — إصدار قصر المصمك';
+        document.getElementById('detail-desc').textContent = 'أول ابتكار لدمج شرائح NFC غير التلامسية في الأزياء السعودية؛ يجمع بين قصة البوكسي الفاخرة ونقشة السدو النجدية وشهادة توثيق ملكية رقمية سحابية لكل قطعة.';
+        document.getElementById('modal-edition').textContent = 'اكتشف الرياض — قصر المصمك';
+        document.getElementById('pod-1').textContent = 'تجربة المسح المباشر لشريحة NFC في شريط السدو';
+        document.getElementById('pod-2').textContent = 'توثيق الملكية السحابية والهوية التراثية المدمجة';
+        document.getElementById('media-img-2').src = currentSide === 'front' ? '2.png' : '3.png';
+        document.getElementById('card-preview-img').src = '3.png';
+      } else {
+        tabCards.className = 'px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/40';
+        tabFashion.className = 'px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all text-cyan-200 hover:text-white';
+
+        document.getElementById('detail-title').textContent = 'البطائق الذكية وحلول التوثيق التفاعلي (NFC)';
+        document.getElementById('detail-desc').textContent = 'تصميم وبرمجة بطاقات الأعمال الذكية (Smart vCards)، بطاقات العضوية والولاء، وملصقات توثيق المنتجات للشركات والعلامات التجارية بواجهة سحابية فورية بدون تطبيقات.';
+        document.getElementById('modal-edition').textContent = 'بطاقة NAMER-IO الذكية التفاعلية';
+        document.getElementById('pod-1').textContent = 'مشاركة بيانات التواصل والملفات بلمسة واحدة';
+        document.getElementById('pod-2').textContent = 'برمجة مخصصة لشرائح NTAG215 و NTAG216';
+      }
+    }
+
+    // قلب صورة التيشيرت بين الأمام (2.png) والخلف (3.png)
+    function toggleShirtSide(e) {
+      e.stopPropagation();
+      const img = document.getElementById('media-img-2');
+      const badge = document.getElementById('view-badge');
+      if (currentSide === 'front') {
+        currentSide = 'back';
+        img.src = '3.png';
+        badge.textContent = 'BACK • التصميم الخلفي والإحداثيات';
+      } else {
+        currentSide = 'front';
+        img.src = '2.png';
+        badge.textContent = 'FRONT • التصميم الأمامي';
+      }
+    }
+
+    function togglePlay(e) {
+      e.stopPropagation();
+      const vid = document.getElementById('media-video-1');
+      if (vid.paused) vid.play(); else vid.pause();
+    }
+
+    function selectItem(idx) {
+      document.getElementById('frame-1').classList.toggle('active-frame', idx === 0);
+      document.getElementById('frame-2').classList.toggle('active-frame', idx === 1);
+    }
+
+    function openNfcModal() {
+      const modal = document.getElementById('nfc-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeNfcModal() {
+      const modal = document.getElementById('nfc-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // في حال عدم وجود الفيديو محلياً قبل الرفع
+    function fallbackMedia(type) {
+      if (type === 'video') {
+        document.getElementById('media-video-1').style.display = 'none';
+        document.getElementById('media-fallback-1').classList.remove('hidden');
+      }
+    }
+
+    // رفع الملفات من الجهاز للمعاينة الفورية
+    function handleLocalUpload(event) {
+      const files = Array.from(event.target.files);
+      files.forEach(file => {
+        const url = URL.createObjectURL(file);
+        if (file.type.startsWith('video/')) {
+          const vid = document.getElementById('media-video-1');
+          vid.src = url;
+          vid.style.display = 'block';
+          document.getElementById('media-fallback-1').classList.add('hidden');
+        } else if (file.type.startsWith('image/')) {
+          const img2 = document.getElementById('media-img-2');
+          const preview = document.getElementById('card-preview-img');
+          if (!img2.dataset.loaded) {
+            img2.src = url;
+            img2.dataset.loaded = 'true';
+          } else {
+            preview.src = url;
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
