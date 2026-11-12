@@ -24,7 +24,6 @@
     }
     .font-tech { font-family: 'Orbitron', sans-serif; }
     
-    /* إطار الواجهة الهولوجرامية الثلاثية */
     .hud-stage {
       perspective: 1600px;
     }
@@ -39,7 +38,6 @@
       transition: transform 0.25s ease-out;
     }
 
-    /* إطارات العرض الطولية 9:16 الصافية بدون أي خطوط تشوش على الصور */
     .holo-frame-916 {
       aspect-ratio: 9 / 16;
       border-radius: 22px;
@@ -57,7 +55,6 @@
       transform: translateY(-4px);
     }
 
-    /* الكبسولات المشطوفة أسفل الإطارات */
     .chamfer-pod {
       background: linear-gradient(90deg, rgba(0, 243, 255, 0.14), rgba(0, 120, 180, 0.08));
       border: 1px solid rgba(0, 243, 255, 0.4);
@@ -69,7 +66,6 @@
       box-shadow: 0 4px 15px rgba(0, 243, 255, 0.15);
     }
 
-    /* البطاقة البيضاء الزجاجية عالية التباين */
     .frosted-white-card {
       background: linear-gradient(160deg, rgba(255, 255, 255, 0.96) 0%, rgba(235, 246, 255, 0.92) 100%);
       color: #0f172a;
@@ -78,7 +74,6 @@
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 30px rgba(0, 243, 255, 0.3);
     }
 
-    /* نبض شريحة NFC */
     @keyframes pulseRing {
       0% { transform: scale(0.85); opacity: 0.9; }
       100% { transform: scale(1.8); opacity: 0; }
@@ -92,7 +87,6 @@
       animation: pulseRing 2s infinite;
     }
 
-    /* قاعدة الإسقاط الضوئي السفلية */
     .projector-beam {
       height: 18px;
       background: radial-gradient(ellipse at center, rgba(0, 243, 255, 0.5) 0%, transparent 70%);
@@ -153,20 +147,17 @@
       <!-- الشبكة الثلاثية المطابقة للتصميم المرجعي -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
 
-        <!-- العمود الأول (9:16): الفيديو التشغيلي / العرض الأول -->
+        <!-- العمود الأول (9:16): الفيديو التشغيلي 1.mp4.mp4 -->
         <div class="lg:col-span-4 flex flex-col gap-3">
           <div id="frame-1" onclick="selectItem(0)" class="holo-frame-916 active-frame group">
-            <!-- شريط علوي يحاكي واجهة الجوال الهولوجرامية -->
             <div class="absolute top-3 inset-x-3 z-20 flex justify-between items-center text-[10px] font-tech text-white/90 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full">
               <span>9:16 LIVE DEMO</span>
               <span class="text-cyan-300">NFC VERIFIED</span>
             </div>
 
-            <!-- مشغل الفيديو الرئيسي 1.mp4 -->
-            <video id="media-video-1" src="1.mp4" autoplay loop muted playsinline class="w-full h-full object-cover" onerror="fallbackMedia('video')"></video>
-            <img id="media-fallback-1" src="2.png" alt="عرض تفاعلي" class="hidden w-full h-full object-cover" onerror="this.style.display='none'">
+            <video id="media-video-1" src="1.mp4.mp4" autoplay loop muted playsinline class="w-full h-full object-cover" onerror="fallbackMedia('video')"></video>
+            <img id="media-fallback-1" src="model-front.png" alt="عرض تفاعلي" class="hidden w-full h-full object-cover" onerror="this.style.display='none'">
 
-            <!-- شريط تحكم سفلي أنيق داخل الإطار -->
             <div class="absolute bottom-3 inset-x-3 z-20 bg-slate-950/75 backdrop-blur-md border border-cyan-500/30 rounded-xl p-2.5 flex items-center justify-between">
               <button onclick="togglePlay(event)" class="text-cyan-300 hover:text-white text-xs font-bold px-2">⏯ تشغيل/إيقاف</button>
               <span class="font-tech text-[10px] text-cyan-200">00:30 • HD</span>
@@ -177,7 +168,7 @@
           </div>
         </div>
 
-        <!-- العمود الثاني (9:16): التصميم الأمامي والخلفي -->
+        <!-- العمود الثاني (9:16): التصميم الأمامي model-front.png والخلفي model-back.png -->
         <div class="lg:col-span-4 flex flex-col gap-3">
           <div id="frame-2" onclick="selectItem(1)" class="holo-frame-916 group">
             <div class="absolute top-3 inset-x-3 z-20 flex justify-between items-center text-[10px] font-tech text-white/90 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full">
@@ -185,8 +176,7 @@
               <button onclick="toggleShirtSide(event)" class="text-amber-300 underline font-cairo font-bold">قلب التصميم ↻</button>
             </div>
 
-            <!-- الصورة الأمامية 2.png والخلفية 3.png -->
-            <img id="media-img-2" src="2.png" alt="مجموعة اكتشف الرياض - قصر المصمك" class="w-full h-full object-cover transition-all duration-500" onerror="drawSvgFallback(this)">
+            <img id="media-img-2" src="model-front.png" alt="مجموعة اكتشف الرياض - قصر المصمك" class="w-full h-full object-cover transition-all duration-500">
 
             <div class="absolute bottom-3 inset-x-3 z-20 bg-slate-950/75 backdrop-blur-md border border-cyan-500/30 rounded-xl p-2.5 flex items-center justify-between">
               <span class="text-xs text-amber-300 font-bold" id="frame-2-label">إصدار قصر المصمك — الرياض</span>
@@ -202,7 +192,6 @@
         <div class="lg:col-span-4 flex flex-col gap-3">
           <div class="frosted-white-card flex-1 p-5 md:p-6 flex flex-col justify-between">
             <div>
-              <!-- شريط علوي داخل البطاقة البيضاء -->
               <div class="flex items-center justify-between mb-4">
                 <span class="text-xs font-bold px-3 py-1 rounded-full bg-slate-900 text-cyan-300 font-tech">NFC-TECH</span>
                 <button onclick="openNfcModal()" class="text-xs font-bold text-blue-700 hover:text-blue-900 flex items-center gap-1 bg-blue-100 px-3 py-1 rounded-full">
@@ -210,15 +199,14 @@
                 </button>
               </div>
 
-              <!-- معاينة مصغرة للتصميم المختار -->
+              <!-- معاينة مصغرة للتصميم الخلفي model-back.png -->
               <div class="w-full h-44 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 mb-4 relative">
-                <img id="card-preview-img" src="3.png" alt="معاينة التفاصيل" class="w-full h-full object-cover object-center" onerror="this.src='2.png'">
+                <img id="card-preview-img" src="model-back.png" alt="معاينة التفاصيل الخلفية" class="w-full h-full object-cover object-center" onerror="this.src='model-front.png'">
                 <div class="absolute bottom-2 right-2 bg-slate-900/85 text-amber-300 text-[11px] font-bold px-2.5 py-1 rounded-lg">
                   نموذج عرض تقني • Portfolio
                 </div>
               </div>
 
-              <!-- العنوان والوصف -->
               <h2 id="detail-title" class="text-xl font-black text-slate-900 mb-1.5">
                 مجموعة اكتشف الرياض — إصدار قصر المصمك
               </h2>
@@ -226,7 +214,6 @@
                 أول ابتكار لدمج شرائح NFC غير التلامسية في الأزياء السعودية؛ يجمع بين قصة البوكسي الفاخرة ونقشة السدو النجدية وشهادة توثيق ملكية رقمية سحابية لكل قطعة.
               </p>
 
-              <!-- المواصفات التقنية -->
               <div id="detail-specs" class="space-y-2 mb-5">
                 <div class="flex items-center justify-between text-xs bg-slate-100 px-3 py-2 rounded-xl">
                   <span class="text-slate-500 font-semibold">نوع الشريحة:</span>
@@ -243,7 +230,6 @@
               </div>
             </div>
 
-            <!-- أزرار التفاعل والتواصل (بدون أسعار بيع) -->
             <div class="space-y-2.5 pt-2 border-t border-slate-200">
               <button onclick="openNfcModal()" class="w-full py-2.5 rounded-xl font-bold text-xs bg-slate-900 text-cyan-300 hover:bg-slate-800 transition flex items-center justify-center gap-2 shadow">
                 <span>تجربة شهادة التوثيق السحابية (Live Demo)</span>
@@ -261,7 +247,6 @@
 
       </div>
     </div>
-    <!-- قاعدة الإسقاط الضوئي السفلية -->
     <div class="projector-beam w-3/4 mx-auto mt-1"></div>
   </main>
 
@@ -316,7 +301,6 @@
     let currentSide = 'front';
     let currentSection = 'fashion';
 
-    // التبديل بين قسم الأزياء المدمجة وقسم البطائق الذكية
     function switchSection(section) {
       currentSection = section;
       const tabFashion = document.getElementById('tab-fashion');
@@ -331,8 +315,8 @@
         document.getElementById('modal-edition').textContent = 'اكتشف الرياض — قصر المصمك';
         document.getElementById('pod-1').textContent = 'تجربة المسح المباشر لشريحة NFC في شريط السدو';
         document.getElementById('pod-2').textContent = 'توثيق الملكية السحابية والهوية التراثية المدمجة';
-        document.getElementById('media-img-2').src = currentSide === 'front' ? '2.png' : '3.png';
-        document.getElementById('card-preview-img').src = '3.png';
+        document.getElementById('media-img-2').src = currentSide === 'front' ? 'model-front.png' : 'model-back.png';
+        document.getElementById('card-preview-img').src = 'model-back.png';
       } else {
         tabCards.className = 'px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/40';
         tabFashion.className = 'px-4 py-2 rounded-lg text-xs md:text-sm font-bold transition-all text-cyan-200 hover:text-white';
@@ -345,18 +329,17 @@
       }
     }
 
-    // قلب صورة التيشيرت بين الأمام (2.png) والخلف (3.png)
     function toggleShirtSide(e) {
       e.stopPropagation();
       const img = document.getElementById('media-img-2');
       const badge = document.getElementById('view-badge');
       if (currentSide === 'front') {
         currentSide = 'back';
-        img.src = '3.png';
+        img.src = 'model-back.png';
         badge.textContent = 'BACK • التصميم الخلفي والإحداثيات';
       } else {
         currentSide = 'front';
-        img.src = '2.png';
+        img.src = 'model-front.png';
         badge.textContent = 'FRONT • التصميم الأمامي';
       }
     }
@@ -384,7 +367,6 @@
       modal.classList.remove('flex');
     }
 
-    // في حال عدم وجود الفيديو محلياً قبل الرفع
     function fallbackMedia(type) {
       if (type === 'video') {
         document.getElementById('media-video-1').style.display = 'none';
@@ -392,7 +374,6 @@
       }
     }
 
-    // رفع الملفات من الجهاز للمعاينة الفورية
     function handleLocalUpload(event) {
       const files = Array.from(event.target.files);
       files.forEach(file => {
