@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>نبيل النمر | NAMER-IO — مبتكر ومطور تقنيات NFC المدمجة بالأزياء والأنظمة التفاعلية</title>
+  <title>نبيل النمر | NAMER-IO — بوابة الأبعاد الذكية وتقنيات NFC</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
   <style>
@@ -39,25 +39,75 @@
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(circle at 50% -10%, rgba(0, 243, 255, 0.2) 0%, transparent 55%),
-        radial-gradient(circle at 85% 35%, rgba(212, 175, 55, 0.14) 0%, transparent 45%),
-        radial-gradient(circle at 15% 85%, rgba(0, 119, 255, 0.16) 0%, transparent 50%);
+        radial-gradient(circle at 50% -10%, rgba(0, 243, 255, 0.22) 0%, transparent 55%),
+        radial-gradient(circle at 85% 35%, rgba(212, 175, 55, 0.16) 0%, transparent 45%),
+        radial-gradient(circle at 15% 85%, rgba(0, 119, 255, 0.18) 0%, transparent 50%);
       z-index: 0;
       pointer-events: none;
     }
 
+    /* شاشة الدخول البيومترية التفاعلية */
+    #boot-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: radial-gradient(circle at center, #061830 0%, #01040a 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      transition: opacity 0.65s ease, visibility 0.65s ease;
+    }
+    #boot-screen.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+    @keyframes scanBar {
+      0% { transform: translateY(-40px); opacity: 0.2; }
+      50% { transform: translateY(40px); opacity: 1; }
+      100% { transform: translateY(-40px); opacity: 0.2; }
+    }
+    .biometric-scanner-line {
+      width: 160px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00f3ff, #d4af37, #00f3ff, transparent);
+      box-shadow: 0 0 15px #00f3ff;
+      animation: scanBar 1.2s ease-in-out infinite;
+    }
+
+    /* موجات الصوت الفضائي في الشريط العلوي */
+    @keyframes voiceWave {
+      0%, 100% { height: 4px; }
+      50% { height: 16px; }
+    }
+    .voice-bar {
+      width: 3px;
+      height: 6px;
+      background: #00f3ff;
+      border-radius: 99px;
+      transition: height 0.15s ease;
+    }
+    .speaking .voice-bar:nth-child(1) { animation: voiceWave 0.5s infinite 0.0s; }
+    .speaking .voice-bar:nth-child(2) { animation: voiceWave 0.5s infinite 0.15s; background: #d4af37; }
+    .speaking .voice-bar:nth-child(3) { animation: voiceWave 0.5s infinite 0.3s; }
+    .speaking .voice-bar:nth-child(4) { animation: voiceWave 0.5s infinite 0.1s; background: #d4af37; }
+
+    /* الحاوية الرئيسية */
     .spatial-deck {
       position: relative;
       z-index: 10;
-      background: linear-gradient(155deg, rgba(6, 18, 38, 0.82) 0%, rgba(2, 8, 20, 0.94) 100%);
+      background: linear-gradient(155deg, rgba(6, 18, 38, 0.84) 0%, rgba(2, 8, 20, 0.95) 100%);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(0, 243, 255, 0.35);
+      border: 1px solid rgba(0, 243, 255, 0.38);
       box-shadow:
-        0 0 70px rgba(0, 243, 255, 0.16),
+        0 0 70px rgba(0, 243, 255, 0.18),
         inset 0 0 40px rgba(0, 243, 255, 0.06);
       border-radius: 30px;
       overflow: hidden;
+      transition: transform 0.2s ease-out;
     }
 
     .spatial-deck::before {
@@ -68,7 +118,7 @@
       width: 60%;
       height: 2px;
       background: linear-gradient(90deg, transparent, var(--gold), var(--cyan), transparent);
-      animation: borderBeam 6s linear infinite;
+      animation: borderBeam 5.5s linear infinite;
       z-index: 40;
     }
     @keyframes borderBeam {
@@ -89,6 +139,7 @@
     .hud-bl { bottom: 10px; left: 10px; border-bottom: 2px solid; border-left: 2px solid; border-bottom-left-radius: 8px; }
     .hud-br { bottom: 10px; right: 10px; border-bottom: 2px solid; border-right: 2px solid; border-bottom-right-radius: 8px; }
 
+    /* إطارات العرض الطولية 9:16 */
     .holo-viewport {
       aspect-ratio: 9 / 16;
       border-radius: 24px;
@@ -110,6 +161,38 @@
         inset 0 0 18px rgba(212, 175, 55, 0.2);
     }
 
+    /* عدسة الفحص الضوئي الذكية */
+    #nfc-loupe {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 2px solid #d4af37;
+      box-shadow: 0 0 25px rgba(0, 243, 255, 0.7), inset 0 0 20px rgba(212, 175, 55, 0.4);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      display: none;
+      z-index: 25;
+      background: radial-gradient(circle, rgba(0, 243, 255, 0.12) 0%, rgba(2, 6, 17, 0.35) 100%);
+      backdrop-filter: contrast(1.18) brightness(1.15);
+    }
+    #nfc-loupe::after {
+      content: 'NFC TAG DETECTED';
+      position: absolute;
+      bottom: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(2, 6, 17, 0.9);
+      color: #00f3ff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9px;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 99px;
+      border: 1px solid rgba(0, 243, 255, 0.5);
+      white-space: nowrap;
+    }
+
     .telemetry-pod {
       background: linear-gradient(90deg, rgba(0, 243, 255, 0.12), rgba(212, 175, 55, 0.12), rgba(0, 243, 255, 0.12));
       border: 1px solid rgba(0, 243, 255, 0.4);
@@ -122,7 +205,7 @@
     }
 
     .crystal-console {
-      background: linear-gradient(165deg, rgba(240, 249, 255, 0.93) 0%, rgba(219, 240, 254, 0.88) 55%, rgba(235, 248, 255, 0.94) 100%);
+      background: linear-gradient(165deg, rgba(240, 249, 255, 0.94) 0%, rgba(219, 240, 254, 0.89) 55%, rgba(235, 248, 255, 0.95) 100%);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       color: #091326;
@@ -194,6 +277,19 @@
       animation: laserSweep 2.2s ease-in-out infinite;
     }
 
+    @keyframes radarSweep {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .radar-beam {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, rgba(0, 243, 255, 0.28) 0deg, transparent 75deg);
+      animation: radarSweep 4s linear infinite;
+      pointer-events: none;
+    }
+
     .holo-emitter-base {
       height: 22px;
       background: radial-gradient(ellipse at center, rgba(0, 243, 255, 0.65) 0%, rgba(212, 175, 55, 0.25) 45%, transparent 75%);
@@ -202,6 +298,23 @@
   </style>
 </head>
 <body class="flex flex-col items-center justify-between p-3 sm:p-5 md:p-6">
+
+  <!-- شاشة الدخول البيومترية مع زر تفعيل الصوت الفضائي -->
+  <div id="boot-screen">
+    <div class="w-20 h-20 rounded-3xl border-2 border-cyan-400/70 bg-slate-950 flex items-center justify-center relative sonar-dot mb-5 shadow-[0_0_40px_rgba(0,243,255,0.3)]">
+      <span class="font-tech font-black text-3xl text-transparent bg-clip-text bg-gradient-to-tr from-cyan-300 to-amber-300">N</span>
+    </div>
+    <div class="biometric-scanner-line mb-4"></div>
+    <p dir="ltr" class="font-tech text-xs tracking-[0.25em] text-cyan-300 uppercase">NAMER-IO // SPATIAL PORTAL</p>
+    <p class="text-sm text-amber-300 mt-1.5 font-bold">بوابة الأبعاد الذكية • الرياض — المملكة العربية السعودية</p>
+    
+    <button onclick="enterPortalWithVoice()" class="mt-6 px-7 py-3 rounded-2xl cyber-btn-primary font-black text-sm flex items-center gap-2 shadow-[0_0_30px_rgba(0,243,255,0.5)]">
+      <span>🛸 دخول البوابة بالترحيب الفضائي</span>
+    </button>
+    <button onclick="enterPortalSilent()" class="mt-3 text-xs text-slate-400 hover:text-cyan-200 underline">
+      الدخول بدون صوت
+    </button>
+  </div>
 
   <canvas id="quantum-canvas"></canvas>
   <div class="nebula-glow"></div>
@@ -226,11 +339,22 @@
         </div>
       </div>
 
-      <!-- زر الصوت التفاعلي -->
-      <button id="audio-toggle" onclick="toggleAudio()" title="تفعيل/كتم المؤثرات الصوتية" class="px-3 py-2 rounded-xl border border-cyan-500/40 bg-slate-900/90 text-cyan-300 hover:border-amber-400 transition flex items-center gap-1.5 text-xs font-tech shrink-0">
-        <span id="audio-icon">🔊</span>
-        <span class="hidden sm:inline" id="audio-label">SFX ON</span>
-      </button>
+      <!-- أزرار الصوت الفضائي والجيروسكوب -->
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button id="voice-replay-btn" onclick="speakSpaceGreeting()" title="إعادة الترحيب الصوتي الفضائي" class="px-2.5 py-2 rounded-xl border border-cyan-400/50 bg-slate-900/90 text-cyan-300 hover:border-amber-400 transition flex items-center gap-1.5 text-xs font-tech">
+          <div id="voice-visualizer" class="flex items-center gap-0.5 h-4">
+            <span class="voice-bar"></span>
+            <span class="voice-bar"></span>
+            <span class="voice-bar"></span>
+            <span class="voice-bar"></span>
+          </div>
+          <span class="hidden sm:inline">AI VOICE</span>
+        </button>
+        <button id="gyro-btn" onclick="enableGyro()" title="تفعيل استشعار الحركة ثلاثي الأبعاد" class="px-2.5 py-2 rounded-xl border border-amber-400/40 bg-slate-900/90 text-amber-300 hover:border-amber-300 transition flex items-center gap-1 text-xs font-tech">
+          <span>🧭</span>
+          <span class="hidden sm:inline">3D</span>
+        </button>
+      </div>
     </div>
 
     <!-- محول الأقسام -->
@@ -258,14 +382,14 @@
       <div dir="ltr" class="flex items-center justify-between text-[11px] md:text-xs font-tech text-cyan-300/90 mb-5 pb-3 border-b border-cyan-500/25 px-2">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-          <span id="sys-status-text">QUANTUM.OS // KSA-EDITION</span>
+          <span id="sys-status-text">SPATIAL.PORTAL // KSA-EDITION</span>
         </div>
         <div class="hidden sm:flex items-center gap-3 text-amber-300/90">
           <span>CARD: NTAG215/216</span>
           <span>•</span>
           <span>RIYADH → ALL KSA</span>
         </div>
-        <div class="text-cyan-200 font-bold">SPATIAL 9:16</div>
+        <div class="text-cyan-200 font-bold">HOLO-LAB 9:16</div>
       </div>
 
       <!-- الشبكة الهولوجرامية الثلاثية -->
@@ -328,21 +452,24 @@
           </div>
         </div>
 
-        <!-- العمود الثاني (9:16) -->
+        <!-- العمود الثاني (9:16) مع عدسة الفحص الضوئي الذكية -->
         <div class="lg:col-span-4 flex flex-col gap-3.5">
           <div id="frame-2" onclick="selectItem(1)" class="holo-viewport tilt-card group">
             
-            <!-- محتوى الأزياء -->
-            <div id="fashion-slot-2" class="w-full h-full">
+            <!-- محتوى الأزياء + عدسة الفحص الضوئي -->
+            <div id="fashion-slot-2" class="w-full h-full relative" onmousemove="moveLoupe(event)" ontouchmove="moveLoupeTouch(event)" onmouseleave="hideLoupe()" ontouchend="hideLoupe()">
               <div class="absolute top-3.5 inset-x-3.5 z-20 flex justify-between items-center text-xs text-white bg-slate-950/65 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-cyan-400/30">
                 <span id="view-badge" class="font-bold">التصميم الأمامي</span>
                 <button onclick="toggleShirtSide(event)" class="text-slate-950 font-black gold-btn px-3 py-0.5 rounded-full text-xs">قلب التصميم ↻</button>
               </div>
 
-              <img id="media-img-2" src="model-front.png" alt="مجموعة اكتشف السعودية - الرياض قصر المصمك" class="w-full h-full object-cover transition-all duration-500">
+              <!-- عدسة التكبير الضوئي لنسيج السدو وبطاقة NFC -->
+              <div id="nfc-loupe"></div>
+
+              <img id="media-img-2" src="model-front.png" alt="مجموعة اكتشف السعودية - الرياض قصر المصمك" class="w-full h-full object-cover transition-all duration-500 select-none">
 
               <div class="absolute bottom-3.5 inset-x-3.5 z-20 bg-slate-950/80 backdrop-blur-md border border-cyan-500/40 rounded-2xl p-3 flex items-center justify-between">
-                <span class="text-sm text-amber-300 font-bold" id="frame-2-label">البداية من الرياض — قصر المصمك</span>
+                <span class="text-xs sm:text-sm text-amber-300 font-bold" id="frame-2-label">مرّر إصبعك للفحص الضوئي للسدو</span>
                 <span dir="ltr" class="font-tech text-xs text-cyan-300">24.6311° N</span>
               </div>
             </div>
@@ -406,7 +533,7 @@
               </div>
 
               <!-- معاينة قسم الأزياء -->
-              <div id="card-preview-fashion" class="w-full h-60 rounded-2xl overflow-hidden bg-slate-900 border-2 border-cyan-500/30 mb-4 relative shadow-inner">
+              <div id="card-preview-fashion" class="w-full h-56 rounded-2xl overflow-hidden bg-slate-900 border-2 border-cyan-500/30 mb-4 relative shadow-inner">
                 <img id="card-preview-img" src="model-back.png" alt="معاينة التفاصيل الخلفية" class="w-full h-full object-cover object-top" onerror="this.src='model-front.png'">
                 <div class="absolute bottom-2 right-2 bg-slate-950/90 text-amber-300 text-xs font-bold px-3 py-1 rounded-lg border border-amber-400/40">
                   إصدار الرياض • قصر المصمك
@@ -497,8 +624,47 @@
     <div class="holo-emitter-base w-4/5 mx-auto mt-1"></div>
   </main>
 
-  <!-- شريط المؤشرات والخبرة (تم نقله إلى أسفل المنصة الهولوجرامية في موقعه الصحيح) -->
-  <section class="relative z-10 w-full max-w-6xl mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
+  <!-- رادار "اكتشف السعودية" التفاعلي (KSA Interactive Radar) -->
+  <section class="relative z-10 w-full max-w-6xl mt-6 p-4 md:p-6 rounded-3xl border border-cyan-500/35 bg-slate-950/80 backdrop-blur-xl shadow-lg">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-5">
+      
+      <div class="flex items-center gap-4">
+        <div class="w-20 h-20 rounded-full border-2 border-cyan-400/60 bg-slate-900 relative flex items-center justify-center shrink-0 overflow-hidden shadow-[0_0_25px_rgba(0,243,255,0.25)]">
+          <div class="radar-beam"></div>
+          <div class="w-12 h-12 rounded-full border border-cyan-500/30"></div>
+          <div class="w-3 h-3 rounded-full bg-amber-400 shadow-[0_0_12px_#d4af37] animate-ping absolute"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-amber-300 absolute"></div>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-tech text-cyan-400 font-bold tracking-wider">KSA RADAR // EXPANSION</span>
+          </div>
+          <h3 class="text-base md:text-lg font-black text-white mt-0.5">رادار مجموعة "اكتشف السعودية"</h3>
+          <p id="radar-status-msg" class="text-xs md:text-sm text-amber-300 font-bold mt-1">
+            ● المحطة الأولى مفعّلة: الرياض — قصر المصمك (إصدار بطاقة NFC الذكية)
+          </p>
+        </div>
+      </div>
+
+      <div class="w-full md:w-auto flex flex-wrap items-center justify-center gap-2">
+        <button onclick="selectRadarRegion('riyadh')" class="px-3.5 py-2 rounded-xl text-xs font-black cyber-btn-primary">
+          📍 الرياض (مفعّل)
+        </button>
+        <button onclick="selectRadarRegion('makkah')" class="px-3.5 py-2 rounded-xl text-xs font-bold border border-cyan-500/40 bg-slate-900/90 text-cyan-200 hover:border-amber-400 transition">
+          🔒 المنطقة الغربية
+        </button>
+        <button onclick="selectRadarRegion('eastern')" class="px-3.5 py-2 rounded-xl text-xs font-bold border border-cyan-500/40 bg-slate-900/90 text-cyan-200 hover:border-amber-400 transition">
+          🔒 المنطقة الشرقية
+        </button>
+        <button onclick="selectRadarRegion('north_south')" class="px-3.5 py-2 rounded-xl text-xs font-bold border border-cyan-500/40 bg-slate-900/90 text-cyan-200 hover:border-amber-400 transition">
+          🔒 الشمال والجنوب
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- شريط المؤشرات والخبرة -->
+  <section class="relative z-10 w-full max-w-6xl mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
     <div class="px-4 py-3 rounded-2xl border border-amber-400/35 bg-slate-950/75 backdrop-blur-md flex items-center justify-between shadow-md">
       <span class="text-xs text-slate-300">الخبرة التسويقية:</span>
       <span class="text-xs md:text-sm font-black text-amber-300">25+ عاماً في الأزياء الرجالية</span>
@@ -522,6 +688,41 @@
       <a href="https://wa.me/966502777884" target="_blank" class="hover:text-amber-300 whitespace-nowrap font-bold text-cyan-300">+966 50 277 7884</a>
     </div>
   </footer>
+
+  <!-- زر المساعد الذكي العائم -->
+  <button onclick="toggleConcierge()" class="fixed bottom-5 left-5 z-40 w-14 h-14 rounded-2xl bg-slate-950 border-2 border-cyan-400 shadow-[0_0_25px_rgba(0,243,255,0.5)] flex items-center justify-center text-2xl hover:scale-105 transition sonar-dot" title="مساعد NAMER-IO الذكي">
+    🤖
+  </button>
+
+  <!-- نافذة المساعد الذكي التفاعلية -->
+  <div id="ai-concierge-box" class="fixed bottom-22 left-5 right-5 sm:right-auto sm:w-96 z-40 hidden rounded-3xl border-2 border-cyan-400/60 bg-slate-950/95 backdrop-blur-xl p-5 shadow-[0_0_45px_rgba(0,243,255,0.3)]">
+    <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🤖</span>
+        <div>
+          <h4 class="text-sm font-black text-white">مساعد NAMER-IO الذكي</h4>
+          <p dir="ltr" class="text-[10px] font-tech text-cyan-400">HOLO-CONCIERGE • ONLINE</p>
+        </div>
+      </div>
+      <button onclick="toggleConcierge()" class="text-slate-400 hover:text-white font-bold">✕</button>
+    </div>
+
+    <div id="concierge-reply" class="bg-slate-900/90 border border-cyan-500/30 rounded-2xl p-3.5 text-xs leading-relaxed text-cyan-100 mb-3 min-h-[75px]">
+      أهلاً بك في بوابة <strong>نبيل النمر (NAMER-IO)</strong>! اختر أحد الأسئلة السريعة أدناه للتعرف على ابتكاراتنا أو طلب تنفيذ مشروعك:
+    </div>
+
+    <div class="space-y-1.5">
+      <button onclick="askConcierge('fashion')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-amber-300 font-bold transition">
+        • كيف تعمل بطاقة NFC المدمجة في الملابس؟
+      </button>
+      <button onclick="askConcierge('exp')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-cyan-200 font-bold transition">
+        • ما هي خبرة نبيل النمر في السوق؟
+      </button>
+      <button onclick="askConcierge('order')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-emerald-300 font-bold transition">
+        • كيف أطلب بطاقة ذكية أو استشارة لمشروعي؟
+      </button>
+    </div>
+  </div>
 
   <!-- نافذة المسح لبطاقة NFC -->
   <div id="nfc-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-xl p-4">
@@ -577,6 +778,108 @@
       }
     }
 
+    // مؤثر صوتي كوني عميق (Cosmic Space Portal Sound)
+    function playCosmicPortalSound() {
+      if (!audioEnabled) return;
+      try {
+        initAudio();
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+
+        // موجة فضائية عميقة (Deep Warp Drone)
+        const subOsc = audioCtx.createOscillator();
+        const subGain = audioCtx.createGain();
+        subOsc.type = 'sine';
+        subOsc.frequency.setValueAtTime(65, now);
+        subOsc.frequency.exponentialRampToValueAtTime(140, now + 0.8);
+        subOsc.frequency.exponentialRampToValueAtTime(55, now + 2.2);
+        subGain.gain.setValueAtTime(0.01, now);
+        subGain.gain.linearRampToValueAtTime(0.14, now + 0.4);
+        subGain.gain.exponentialRampToValueAtTime(0.001, now + 2.3);
+        subOsc.connect(subGain);
+        subGain.connect(audioCtx.destination);
+        subOsc.start(now);
+        subOsc.stop(now + 2.3);
+
+        // رنين بلوري فضائي (Cosmic Shimmer Chimes)
+        [440, 554.37, 659.25, 880, 1108.73].forEach((freq, i) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + i * 0.14);
+          gain.gain.setValueAtTime(0.001, now + i * 0.14);
+          gain.gain.linearRampToValueAtTime(0.055, now + i * 0.14 + 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.0008, now + i * 0.14 + 0.9);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + i * 0.14);
+          osc.stop(now + i * 0.14 + 0.9);
+        });
+      } catch (e) {}
+    }
+
+    // الصوت الترحيبي الفضائي الناطق (Space AI Voice Greeting)
+    function speakSpaceGreeting() {
+      playCosmicPortalSound();
+      const visualizer = document.getElementById('voice-visualizer');
+      if (visualizer) visualizer.classList.add('speaking');
+
+      if ('speechSynthesis' in window) {
+        try {
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(
+            'مرحباً بك في بوابة الأبعاد الذكية.. نامر آي أو.. ابتكار نبيل النمر.'
+          );
+          utterance.lang = 'ar-SA';
+          // ضبط التردد والسرعة لإعطاء طابع صوتي مستقبلي فضائي هادئ
+          utterance.pitch = 0.82;
+          utterance.rate = 0.92;
+          utterance.volume = 1.0;
+
+          const voices = window.speechSynthesis.getVoices();
+          const arVoice = voices.find(v => v.lang.includes('ar'));
+          if (arVoice) utterance.voice = arVoice;
+
+          utterance.onend = () => {
+            if (visualizer) visualizer.classList.remove('speaking');
+          };
+          utterance.onerror = () => {
+            if (visualizer) visualizer.classList.remove('speaking');
+          };
+
+          window.speechSynthesis.speak(utterance);
+        } catch (e) {
+          setTimeout(() => {
+            if (visualizer) visualizer.classList.remove('speaking');
+          }, 2500);
+        }
+      } else {
+        setTimeout(() => {
+          if (visualizer) visualizer.classList.remove('speaking');
+        }, 2500);
+      }
+    }
+
+    // الدخول مع تفعيل الصوت الفضائي
+    function enterPortalWithVoice() {
+      const boot = document.getElementById('boot-screen');
+      if (boot) boot.classList.add('fade-out');
+      speakSpaceGreeting();
+    }
+
+    // الدخول الصامت
+    function enterPortalSilent() {
+      const boot = document.getElementById('boot-screen');
+      if (boot) boot.classList.add('fade-out');
+    }
+
+    // تحميل الأصوات مسبقاً في المتصفح
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
+
     function playClick() {
       if (!audioEnabled) return;
       try {
@@ -617,11 +920,95 @@
       } catch (e) {}
     }
 
-    function toggleAudio() {
-      audioEnabled = !audioEnabled;
-      document.getElementById('audio-icon').textContent = audioEnabled ? '🔊' : '🔇';
-      document.getElementById('audio-label').textContent = audioEnabled ? 'SFX ON' : 'SFX OFF';
-      if (audioEnabled) playClick();
+    function moveLoupe(e) {
+      const container = document.getElementById('fashion-slot-2');
+      const loupe = document.getElementById('nfc-loupe');
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      loupe.style.display = 'block';
+      loupe.style.left = x + 'px';
+      loupe.style.top = y + 'px';
+    }
+
+    function moveLoupeTouch(e) {
+      if (!e.touches || !e.touches[0]) return;
+      const container = document.getElementById('fashion-slot-2');
+      const loupe = document.getElementById('nfc-loupe');
+      const rect = container.getBoundingClientRect();
+      const x = e.touches[0].clientX - rect.left;
+      const y = e.touches[0].clientY - rect.top;
+      if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+        loupe.style.display = 'block';
+        loupe.style.left = x + 'px';
+        loupe.style.top = y + 'px';
+      }
+    }
+
+    function hideLoupe() {
+      const loupe = document.getElementById('nfc-loupe');
+      if (loupe) loupe.style.display = 'none';
+    }
+
+    function enableGyro() {
+      playClick();
+      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission()
+          .then(state => {
+            if (state === 'granted') {
+              window.addEventListener('deviceorientation', handleOrientation);
+              document.getElementById('gyro-btn').classList.add('bg-amber-400', 'text-slate-950');
+            }
+          })
+          .catch(() => {});
+      } else {
+        window.addEventListener('deviceorientation', handleOrientation);
+        document.getElementById('gyro-btn').classList.add('bg-amber-400', 'text-slate-950');
+      }
+    }
+
+    function handleOrientation(event) {
+      const deck = document.getElementById('hud-container');
+      if (!deck || event.gamma === null || event.beta === null) return;
+      const tiltX = Math.max(-6, Math.min(6, event.gamma / 5));
+      const tiltY = Math.max(-6, Math.min(6, (event.beta - 45) / 6));
+      deck.style.transform = `perspective(1200px) rotateY(${tiltX}deg) rotateX(${-tiltY}deg)`;
+    }
+
+    function selectRadarRegion(region) {
+      playClick();
+      const msg = document.getElementById('radar-status-msg');
+      if (region === 'riyadh') {
+        msg.textContent = '● المحطة الأولى مفعّلة: الرياض — قصر المصمك (إصدار بطاقة NFC الذكية)';
+        msg.className = 'text-xs md:text-sm text-amber-300 font-bold mt-1';
+      } else if (region === 'makkah') {
+        msg.textContent = '⏳ المنطقة الغربية: إصدارات قادمة توثق معالم جدة ومكة والطائف ضمن مجموعة اكتشف السعودية.';
+        msg.className = 'text-xs md:text-sm text-cyan-300 font-bold mt-1';
+      } else if (region === 'eastern') {
+        msg.textContent = '⏳ المنطقة الشرقية: إصدارات قادمة توثق واحة الأحساء والخليج العربي بتقنية NFC.';
+        msg.className = 'text-xs md:text-sm text-cyan-300 font-bold mt-1';
+      } else {
+        msg.textContent = '⏳ الشمال والجنوب: إصدارات قادمة توثق العلا وعسير وتبوك لتكتمل خريطة المملكة.';
+        msg.className = 'text-xs md:text-sm text-cyan-300 font-bold mt-1';
+      }
+    }
+
+    function toggleConcierge() {
+      playClick();
+      const box = document.getElementById('ai-concierge-box');
+      box.classList.toggle('hidden');
+    }
+
+    function askConcierge(topic) {
+      playClick();
+      const reply = document.getElementById('concierge-reply');
+      if (topic === 'fashion') {
+        reply.innerHTML = 'يتم دمج <strong>بطاقة NFC ذكية</strong> مقاومة للغسيل والحرارة داخل نسيج السدو المطرز؛ بمجرد تمرير الجوال عليها تفتح شهادة التوثيق السحابية وهوية القطعة فوراً بدون تطبيقات.';
+      } else if (topic === 'exp') {
+        reply.innerHTML = 'يقود المنصة <strong>نبيل النمر</strong> — اختصاصي تسويق بخبرة تمتد لأكثر من <strong>25 عاماً في مجال الملابس الرجالية</strong>، جمع فيها بين أصالة السوق السعودي وأحدث تقنيات التفاعل الرقمي.';
+      } else {
+        reply.innerHTML = 'يسعدنا تواصلك! يمكنك الضغط على زر <strong>"تواصل مباشر عبر الواتساب"</strong> لطلب استشارة أو تنفيذ بطاقات ذكية وأزياء تفاعلية لعلامتك التجارية.';
+      }
     }
 
     function downloadVCard() {
@@ -726,7 +1113,7 @@
         tabFashion.className = 'px-4 py-3 md:py-2.5 rounded-xl text-sm md:text-base font-black transition-all cyber-btn-primary text-center';
         tabCards.className = 'px-4 py-3 md:py-2.5 rounded-xl text-sm md:text-base font-bold transition-all text-cyan-100 hover:text-white text-center';
         
-        document.getElementById('sys-status-text').textContent = 'QUANTUM.OS // KSA-EDITION';
+        document.getElementById('sys-status-text').textContent = 'SPATIAL.PORTAL // KSA-EDITION';
         document.getElementById('card-top-tag').textContent = 'KSA-NFC-CARD';
         
         document.getElementById('fashion-slot-1').classList.remove('hidden');
@@ -748,7 +1135,7 @@
         tabCards.className = 'px-4 py-3 md:py-2.5 rounded-xl text-sm md:text-base font-black transition-all cyber-btn-primary text-center';
         tabFashion.className = 'px-4 py-3 md:py-2.5 rounded-xl text-sm md:text-base font-bold transition-all text-cyan-100 hover:text-white text-center';
 
-        document.getElementById('sys-status-text').textContent = 'QUANTUM.OS // SMART-CARDS';
+        document.getElementById('sys-status-text').textContent = 'SPATIAL.PORTAL // SMART-CARDS';
         document.getElementById('card-top-tag').textContent = 'NFC-SOLUTIONS';
 
         document.getElementById('fashion-slot-1').classList.add('hidden');
