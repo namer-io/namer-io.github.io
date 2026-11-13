@@ -46,7 +46,7 @@
       pointer-events: none;
     }
 
-    /* خطوط السدو الهندسية الخفية في الخلفية (Cyber-Heritage Sadu Grid) */
+    /* خطوط السدو الهندسية الخفية (Cyber-Heritage Sadu Grid) */
     .sadu-cyber-pattern {
       background-image:
         linear-gradient(45deg, rgba(212, 175, 55, 0.04) 25%, transparent 25%),
@@ -87,7 +87,7 @@
       }
     }
 
-    /* شاشة الدخول البيومترية التفاعلية */
+    /* شاشة الدخول البيومترية ثنائية المسار */
     #boot-screen {
       position: fixed;
       inset: 0;
@@ -269,6 +269,12 @@
       transform: translateY(-1px);
     }
 
+    /* توهج خفيف للتبويب الثانوي غير النشط */
+    .tab-ambient-glow {
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      box-shadow: inset 0 0 14px rgba(212, 175, 55, 0.14);
+    }
+
     @keyframes sonarWave {
       0% { transform: scale(0.8); opacity: 0.9; }
       100% { transform: scale(2.1); opacity: 0; }
@@ -323,25 +329,43 @@
       background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.45) 0%, rgba(0, 243, 255, 0.35) 45%, transparent 75%);
       filter: blur(5px);
     }
+
+    /* شريط تمرير أنيق لبطاقات المشاريع */
+    .custom-scroll::-webkit-scrollbar { width: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(2, 6, 17, 0.4); }
+    .custom-scroll::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.4); border-radius: 99px; }
   </style>
 </head>
 <body class="flex flex-col items-center justify-between p-3 sm:p-5 md:p-6">
 
-  <!-- شاشة الدخول البيومترية مع زر تفعيل الصوت الفضائي -->
+  <!-- شاشة الدخول البيومترية ثنائية المسار (تُظهر القسمين بوضوح للزائر) -->
   <div id="boot-screen">
     <div class="w-20 h-20 rounded-3xl border-2 border-cyan-400/70 bg-slate-950 flex items-center justify-center relative sonar-dot mb-5 shadow-[0_0_40px_rgba(0,243,255,0.3)]">
       <span class="font-tech font-black text-3xl text-transparent bg-clip-text bg-gradient-to-tr from-cyan-300 to-amber-300">N</span>
     </div>
     <div class="biometric-scanner-line mb-4"></div>
-    <p dir="ltr" class="font-tech text-xs tracking-[0.25em] text-cyan-300 uppercase">NAMER-IO // ALIEN-FREQUENCY LINK</p>
-    <p class="text-sm text-amber-300 mt-1.5 font-bold">بوابة الأبعاد الذكية • الرياض — المملكة العربية السعودية</p>
+    <p dir="ltr" class="font-tech text-xs tracking-[0.25em] text-cyan-300 uppercase">NAMER-IO // DUAL-DIMENSION PORTAL</p>
+    <p class="text-sm text-amber-300 mt-1.5 font-bold">بوابة الأبعاد الذكية • اختر وجهتك للدخول بالنداء الفضائي</p>
     
-    <button onclick="enterPortalWithVoice()" class="mt-6 px-7 py-3 rounded-2xl cyber-btn-primary font-black text-sm flex items-center gap-2 shadow-[0_0_30px_rgba(0,243,255,0.5)]">
-      <span>🛸 فتح البوابة بالنداء الفضائي</span>
-    </button>
-    <button onclick="enterPortalSilent()" class="mt-3 text-xs text-slate-400 hover:text-cyan-200 underline">
-      الدخول بدون صوت
-    </button>
+    <!-- أزرار الدخول المباشر لكلا القسمين -->
+    <div class="mt-6 w-full max-w-md grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <button onclick="enterPortal('fashion', true)" class="px-5 py-3.5 rounded-2xl cyber-btn-primary font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_0_28px_rgba(0,243,255,0.45)]">
+        <span>👕 الأزياء المدمجة بـ NFC</span>
+      </button>
+      <button onclick="enterPortal('cards', true)" class="px-5 py-3.5 rounded-2xl gold-btn font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_0_28px_rgba(212,175,55,0.45)]">
+        <span>💳 البطائق الذكية والحلول</span>
+      </button>
+    </div>
+
+    <div class="mt-4 flex items-center justify-center gap-4 text-xs text-slate-400">
+      <button onclick="enterPortal('fashion', false)" class="hover:text-cyan-200 underline">
+        دخول الأزياء (بدون صوت)
+      </button>
+      <span>•</span>
+      <button onclick="enterPortal('cards', false)" class="hover:text-amber-200 underline">
+        دخول البطائق (بدون صوت)
+      </button>
+    </div>
   </div>
 
   <canvas id="quantum-canvas"></canvas>
@@ -390,7 +414,7 @@
       <button id="tab-fashion" onclick="switchSection('fashion')" class="px-4 py-3 md:py-2.5 rounded-xl text-sm md:text-base font-black transition-all cyber-btn-primary text-center">
         الأزياء المدمجة بـ NFC
       </button>
-      <button id="tab-cards" onclick="switchSection('cards')" class="px-4 py-3 md:py-2.5 rounded-xl text-sm md:text-base font-bold transition-all text-cyan-100 hover:text-white text-center">
+      <button id="tab-cards" onclick="switchSection('cards')" class="px-4 py-3 md:py-2.5 rounded-xl text-sm md:text-base font-bold transition-all text-amber-200 hover:text-white tab-ambient-glow text-center">
         البطائق الذكية والحلول
       </button>
     </div>
@@ -499,42 +523,58 @@
               </div>
             </div>
 
-            <!-- محتوى البطائق الذكية 2 -->
-            <div id="cards-slot-2" class="hidden w-full h-full bg-gradient-to-b from-slate-950 via-blue-950/60 to-slate-950 flex flex-col justify-between pt-14 pb-4 px-5 text-right relative">
+            <!-- محتوى البطائق الذكية 2 (يشمل سجل الرحّالة الجديد Traveler-Chronicle) -->
+            <div id="cards-slot-2" class="hidden w-full h-full bg-gradient-to-b from-slate-950 via-blue-950/60 to-slate-950 flex flex-col justify-between pt-14 pb-4 px-4 text-right relative">
               <div dir="ltr" class="absolute top-3.5 inset-x-3.5 z-20 flex justify-between items-center text-[11px] font-tech text-white bg-slate-950/65 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-cyan-400/30">
                 <span>LIVE PROJECTS</span>
-                <span class="text-emerald-400 font-bold">2 APPS ACTIVE</span>
+                <span class="text-emerald-400 font-bold">3 APPS ACTIVE</span>
               </div>
 
-              <div class="my-auto space-y-3.5">
-                <div class="p-4 rounded-2xl bg-slate-900/90 border border-cyan-400/50 shadow-lg hover:border-cyan-300 transition">
-                  <div class="flex items-center justify-between mb-1.5">
-                    <span class="text-sm font-black text-white">بطاقة الملاعب والفعاليات الذكية</span>
-                    <span dir="ltr" class="font-tech text-[10px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300">STADIUM</span>
+              <div class="my-auto space-y-2.5 overflow-y-auto custom-scroll pr-0.5 max-h-[76%]">
+                <!-- بطاقة سجل الرحّالة الجديدة -->
+                <div class="p-3.5 rounded-2xl bg-slate-900/95 border border-purple-400/55 shadow-lg hover:border-purple-300 transition">
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-xs sm:text-sm font-black text-white">سجل الرحّالة التفاعلي</span>
+                    <span dir="ltr" class="font-tech text-[9px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300">CHRONICLE</span>
                   </div>
-                  <p class="text-xs text-cyan-100/80 mb-3 leading-relaxed">
-                    تجربة جماهيرية ذكية للملاعب والفعاليات الكبرى عبر تقنية NFC للدخول السريع والخدمات التفاعلية.
+                  <p class="text-[11px] text-purple-100/85 mb-2.5 leading-relaxed">
+                    بطاقة توثيق الرحلات والمسارات الذكية بتجربة تفاعلية مرتبطة بتقنية NFC.
                   </p>
-                  <a href="https://maliknabil050-crypto.github.io/MATCHDAY-SMART/" target="_blank" onclick="playClick(); event.stopPropagation()" class="w-full py-2.5 rounded-xl cyber-btn-primary font-black text-xs flex items-center justify-center gap-1.5">
+                  <a href="https://yusefna30-lgtm.github.io/traveler-chronicle/" target="_blank" onclick="playClick(); event.stopPropagation()" class="w-full py-2 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-black text-xs flex items-center justify-center gap-1.5 shadow">
+                    <span>تشغيل TRAVELER-CHRONICLE ↗</span>
+                  </a>
+                </div>
+
+                <!-- بطاقة الملاعب -->
+                <div class="p-3.5 rounded-2xl bg-slate-900/95 border border-cyan-400/50 shadow-lg hover:border-cyan-300 transition">
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-xs sm:text-sm font-black text-white">بطاقة الملاعب والفعاليات الذكية</span>
+                    <span dir="ltr" class="font-tech text-[9px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300">STADIUM</span>
+                  </div>
+                  <p class="text-[11px] text-cyan-100/80 mb-2.5 leading-relaxed">
+                    تجربة جماهيرية ذكية للملاعب والفعاليات الكبرى للدخول السريع والخدمات التفاعلية.
+                  </p>
+                  <a href="https://maliknabil050-crypto.github.io/MATCHDAY-SMART/" target="_blank" onclick="playClick(); event.stopPropagation()" class="w-full py-2 rounded-xl cyber-btn-primary font-black text-xs flex items-center justify-center gap-1.5">
                     <span>تشغيل MATCHDAY-SMART ↗</span>
                   </a>
                 </div>
 
-                <div class="p-4 rounded-2xl bg-slate-900/90 border border-amber-400/50 shadow-lg hover:border-amber-300 transition">
-                  <div class="flex items-center justify-between mb-1.5">
-                    <span class="text-sm font-black text-white">منيو المقاهي والمطاعم الذكي</span>
-                    <span dir="ltr" class="font-tech text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300">HOSPITALITY</span>
+                <!-- منيو المقاهي -->
+                <div class="p-3.5 rounded-2xl bg-slate-900/95 border border-amber-400/50 shadow-lg hover:border-amber-300 transition">
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-xs sm:text-sm font-black text-white">منيو المقاهي والمطاعم الذكي</span>
+                    <span dir="ltr" class="font-tech text-[9px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300">HOSPITALITY</span>
                   </div>
-                  <p class="text-xs text-amber-100/80 mb-3 leading-relaxed">
-                    تصفح القائمة والطلب الفوري من الطاولة بلمسة واحدة على بطاقة NFC مدمجة بتصميم عصري.
+                  <p class="text-[11px] text-amber-100/80 mb-2.5 leading-relaxed">
+                    تصفح القائمة والطلب الفوري من الطاولة بلمسة واحدة على بطاقة NFC مدمجة.
                   </p>
-                  <a href="https://maliknabil050-crypto.github.io/namq.cafe/" target="_blank" onclick="playClick(); event.stopPropagation()" class="w-full py-2.5 rounded-xl gold-btn font-black text-xs flex items-center justify-center gap-1.5">
+                  <a href="https://maliknabil050-crypto.github.io/namq.cafe/" target="_blank" onclick="playClick(); event.stopPropagation()" class="w-full py-2 rounded-xl gold-btn font-black text-xs flex items-center justify-center gap-1.5">
                     <span>تشغيل منيو NAMQ.CAFE ↗</span>
                   </a>
                 </div>
               </div>
 
-              <div class="w-full bg-slate-950/85 backdrop-blur-md border border-cyan-500/40 rounded-2xl p-3 flex items-center justify-between">
+              <div class="w-full bg-slate-950/85 backdrop-blur-md border border-cyan-500/40 rounded-2xl p-2.5 flex items-center justify-between">
                 <span class="text-xs text-cyan-300 font-bold">تطبيقات حية منفذة</span>
                 <span dir="ltr" class="font-tech text-xs text-emerald-400">CLOUD NFC</span>
               </div>
@@ -565,22 +605,26 @@
                 </div>
               </div>
 
-              <!-- روابط سريعة للتجربة في قسم البطائق -->
-              <div id="card-preview-cards" class="hidden w-full rounded-2xl bg-slate-950 border border-cyan-500/50 mb-4 p-4 text-white space-y-2.5 shadow-lg">
-                <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <!-- روابط سريعة للتجربة في قسم البطائق (4 تطبيقات حية) -->
+              <div id="card-preview-cards" class="hidden w-full rounded-2xl bg-slate-950 border border-cyan-500/50 mb-4 p-3.5 text-white space-y-2 shadow-lg">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
                   <span class="text-xs font-black text-amber-300">بوابة التطبيقات التفاعلية الحية:</span>
-                  <span dir="ltr" class="font-tech text-[10px] text-cyan-400">3 LIVE APPS</span>
+                  <span dir="ltr" class="font-tech text-[10px] text-cyan-400">4 LIVE APPS</span>
                 </div>
-                <a href="https://maliknabil050-crypto.github.io/smart-pass/" target="_blank" onclick="playClick()" class="flex items-center justify-between text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2.5 rounded-xl transition">
+                <a href="https://maliknabil050-crypto.github.io/smart-pass/" target="_blank" onclick="playClick()" class="flex items-center justify-between text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl transition">
                   <span class="font-bold text-cyan-200">1. بطاقة الأعمال الذكية (Smart-Pass)</span>
                   <span class="text-amber-300 font-black">فتح ↗</span>
                 </a>
-                <a href="https://maliknabil050-crypto.github.io/MATCHDAY-SMART/" target="_blank" onclick="playClick()" class="flex items-center justify-between text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2.5 rounded-xl transition">
-                  <span class="font-bold text-cyan-200">2. بطاقة الملاعب الذكية (Matchday)</span>
+                <a href="https://yusefna30-lgtm.github.io/traveler-chronicle/" target="_blank" onclick="playClick()" class="flex items-center justify-between text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl transition">
+                  <span class="font-bold text-purple-200">2. سجل الرحّالة (Traveler-Chronicle)</span>
                   <span class="text-amber-300 font-black">فتح ↗</span>
                 </a>
-                <a href="https://maliknabil050-crypto.github.io/namq.cafe/" target="_blank" onclick="playClick()" class="flex items-center justify-between text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2.5 rounded-xl transition">
-                  <span class="font-bold text-cyan-200">3. منيو المقاهي الذكي (Namq Cafe)</span>
+                <a href="https://maliknabil050-crypto.github.io/MATCHDAY-SMART/" target="_blank" onclick="playClick()" class="flex items-center justify-between text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl transition">
+                  <span class="font-bold text-cyan-200">3. بطاقة الملاعب الذكية (Matchday)</span>
+                  <span class="text-amber-300 font-black">فتح ↗</span>
+                </a>
+                <a href="https://maliknabil050-crypto.github.io/namq.cafe/" target="_blank" onclick="playClick()" class="flex items-center justify-between text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl transition">
+                  <span class="font-bold text-cyan-200">4. منيو المقاهي الذكي (Namq Cafe)</span>
                   <span class="text-amber-300 font-black">فتح ↗</span>
                 </a>
               </div>
@@ -611,7 +655,7 @@
               <div id="specs-cards" class="hidden space-y-2 mb-4">
                 <div class="flex items-center justify-between text-xs md:text-sm bg-white/80 border border-cyan-500/25 px-3.5 py-2 rounded-xl">
                   <span class="text-slate-600 font-semibold">القطاعات المخدومة:</span>
-                  <span class="font-bold text-slate-900">الأعمال، الملاعب، الضيافة</span>
+                  <span class="font-bold text-slate-900">الأعمال، السياحة، الملاعب، الضيافة</span>
                 </div>
                 <div class="flex items-center justify-between text-xs md:text-sm bg-white/80 border border-cyan-500/25 px-3.5 py-2 rounded-xl">
                   <span class="text-slate-600 font-semibold">التوافق:</span>
@@ -700,12 +744,12 @@
     </div>
   </footer>
 
-  <!-- زر المساعد الذكي العائم -->
+  <!-- زر المساعد الذكي العائم (متواجد في كلا القسمين) -->
   <button onclick="toggleConcierge()" class="fixed bottom-5 left-5 z-40 w-14 h-14 rounded-2xl bg-slate-950 border-2 border-amber-400 shadow-[0_0_25px_rgba(212,175,55,0.5)] flex items-center justify-center text-2xl hover:scale-105 transition sonar-dot" title="مساعد NAMER-IO الذكي">
     🤖
   </button>
 
-  <!-- نافذة المساعد الذكي التفاعلية الشاملة (5 محاور + شريط تواصل فوري + زر كتم) -->
+  <!-- نافذة المساعد الذكي التفاعلية الشاملة -->
   <div id="ai-concierge-box" class="fixed bottom-22 left-4 right-4 sm:right-auto sm:w-[410px] z-40 hidden rounded-3xl border-2 border-cyan-400/60 bg-slate-950/95 backdrop-blur-xl p-5 shadow-[0_0_50px_rgba(0,243,255,0.35)] max-h-[82vh] overflow-y-auto">
     <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
       <div class="flex items-center gap-2">
@@ -981,19 +1025,16 @@
       }
     }
 
-    function enterPortalWithVoice() {
-      conciergeVoiceEnabled = true;
+    // بوابة الدخول ثنائية المسار (مع أو بدون صوت)
+    function enterPortal(targetSection, withVoice) {
+      conciergeVoiceEnabled = withVoice;
       updateConciergeMuteUI();
       const boot = document.getElementById('boot-screen');
       if (boot) boot.classList.add('fade-out');
-      speakSpaceGreeting();
-    }
-
-    function enterPortalSilent() {
-      conciergeVoiceEnabled = false;
-      updateConciergeMuteUI();
-      const boot = document.getElementById('boot-screen');
-      if (boot) boot.classList.add('fade-out');
+      switchSection(targetSection, false);
+      if (withVoice) {
+        speakSpaceGreeting();
+      }
     }
 
     if ('speechSynthesis' in window) {
@@ -1097,7 +1138,7 @@
       }
     }
 
-    // الإجابات النصية والمنطوقة في المساعد الذكي (5 محاور شاملة)
+    // الإجابات النصية والمنطوقة في المساعد الذكي (بدون عبارة "بقيادة نبيل النمر")
     function askConcierge(topic) {
       playClick();
       const reply = document.getElementById('concierge-reply');
@@ -1110,8 +1151,8 @@
         reply.innerHTML = 'نعتمد تقنية الاتصال قريب المدى بتردد <strong>13.56MHz</strong> وفق المعيار الدولي <strong>ISO/IEC 14443A</strong> باستخدام بطاقات <strong>NTAG215 و NTAG216</strong>، مع تشفير سحابي ديناميكي يعمل بلمسة واحدة على iOS و Android بدون تطبيقات.';
         spokenText = 'نعتمد تقنية الاتصال قريب المدى بتردد ثلاثة عشر فاصلة ستة وخمسين ميجا هيرتز وفق المعيار الدولي آيزو، باستخدام بطاقات إن تاج مئتين وخمسة عشر ومئتين وستة عشر، مع تشفير سحابي ديناميكي يعمل بلمسة واحدة على آيفون وأندرويد بدون تطبيقات.';
       } else if (topic === 'vision') {
-        reply.innerHTML = 'ينطلق المشروع بخبرة تسويقية تمتد لـ <strong>25 عاماً في مجال الملابس الرجالية</strong> بقيادة نبيل النمر، ويهدف لتغطية <strong>كافة مناطق المملكة انطلاقاً من الرياض</strong> عبر مجموعة اكتشف السعودية.';
-        spokenText = 'ينطلق المشروع بخبرة تسويقية تمتد لخمسة وعشرين عاماً في مجال الملابس الرجالية بقيادة نبيل النمر، ويهدف لتغطية كافة مناطق المملكة انطلاقاً من الرياض عبر مجموعة اكتشف السعودية.';
+        reply.innerHTML = 'ينطلق المشروع بخبرة تسويقية تمتد لـ <strong>25 عاماً في مجال الملابس الرجالية</strong>، ويهدف لتغطية <strong>كافة مناطق المملكة انطلاقاً من الرياض</strong> عبر مجموعة اكتشف السعودية.';
+        spokenText = 'ينطلق المشروع بخبرة تسويقية تمتد لخمسة وعشرين عاماً في مجال الملابس الرجالية، ويهدف لتغطية كافة مناطق المملكة انطلاقاً من الرياض عبر مجموعة اكتشف السعودية.';
       } else if (topic === 'wholesale') {
         reply.innerHTML = 'نعم، نوفر منظومة متكاملة للشركات والعلامات التجارية تشمل <strong>التصميم، الطباعة الاحترافية، التوزيع بالجملة (بالشدة)</strong>، وبرمجة ودمج بطاقات NFC المخصصة لهويتكم التجارية.';
         spokenText = 'نعم، نوفر منظومة متكاملة للشركات والعلامات التجارية تشمل التصميم والطباعة الاحترافية والتوزيع بالجملة، وبرمجة ودمج بطاقات إن إف سي المخصصة لهويتكم التجارية.';
@@ -1218,15 +1259,15 @@
       });
     });
 
-    function switchSection(section) {
-      playClick();
+    function switchSection(section, withSound = true) {
+      if (withSound) playClick();
       currentSection = section;
       const tabFashion = document.getElementById('tab-fashion');
       const tabCards = document.getElementById('tab-cards');
 
       if (section === 'fashion') {
         tabFashion.className = 'px-4 py-3 md:py-2.5 rounded-xl text-sm md:text-base font-black transition-all cyber-btn-primary text-center';
-        tabCards.className = 'px-4 py-3 md:py-2.5 rounded-xl text-sm md:text-base font-bold transition-all text-cyan-100 hover:text-white text-center';
+        tabCards.className = 'px-4 py-3 md:py-2.5 rounded-xl text-sm md:text-base font-bold transition-all text-amber-200 hover:text-white tab-ambient-glow text-center';
         
         document.getElementById('sys-status-text').textContent = 'SPATIAL.PORTAL // KSA-EDITION';
         document.getElementById('card-top-tag').textContent = 'KSA-NFC-CARD';
@@ -1248,7 +1289,7 @@
         document.getElementById('pod-2').textContent = 'مشروع يغطي كل المملكة انطلاقاً من الرياض';
       } else {
         tabCards.className = 'px-4 py-3 md:py-2.5 rounded-xl text-sm md:text-base font-black transition-all cyber-btn-primary text-center';
-        tabFashion.className = 'px-4 py-3 md:py-2.5 rounded-xl text-sm md:text-base font-bold transition-all text-cyan-100 hover:text-white text-center';
+        tabFashion.className = 'px-4 py-3 md:py-2.5 rounded-xl text-sm md:text-base font-bold transition-all text-cyan-100 hover:text-white tab-ambient-glow text-center';
 
         document.getElementById('sys-status-text').textContent = 'SPATIAL.PORTAL // SMART-CARDS';
         document.getElementById('card-top-tag').textContent = 'NFC-SOLUTIONS';
@@ -1263,11 +1304,11 @@
         document.getElementById('specs-cards').classList.remove('hidden');
 
         document.getElementById('detail-title').textContent = 'البطائق الذكية وحلول التوثيق التفاعلي (NFC)';
-        document.getElementById('detail-desc').textContent = 'نماذج حية منفذة لبطاقات الأعمال الذكية (Smart-Pass)، بطاقات الملاعب والفعاليات (Matchday)، ومنيو الضيافة التفاعلي (Namq Cafe) بواجهة سحابية فورية.';
+        document.getElementById('detail-desc').textContent = 'نماذج حية منفذة لبطاقات الأعمال الذكية (Smart-Pass)، سجل الرحّالة التفاعلي (Traveler-Chronicle)، بطاقات الملاعب (Matchday)، ومنيو الضيافة (Namq Cafe) بواجهة سحابية فورية.';
         document.getElementById('modal-edition').textContent = 'منظومة بطاقات NAMER-IO الذكية';
         document.getElementById('modal-serial').textContent = 'NAMER-SMART-SUITE';
         document.getElementById('pod-1').textContent = 'بطاقة SMART-PASS للتعريف والأعمال بلمسة واحدة';
-        document.getElementById('pod-2').textContent = 'حلول الملاعب الذكية ومنيو المقاهي التفاعلي';
+        document.getElementById('pod-2').textContent = 'سجل الرحّالة • الملاعب الذكية • منيو الضيافة';
       }
     }
 
