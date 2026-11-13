@@ -46,7 +46,7 @@
       pointer-events: none;
     }
 
-    /* تأثير تموّجات الماء الضوئية عند لمس الشاشة (Water Ripple) */
+    /* تأثير تموّجات الماء الضوئية عند لمس الشاشة */
     .water-ripple-ring {
       position: fixed;
       border-radius: 50%;
@@ -107,7 +107,7 @@
       animation: scanBar 1.2s ease-in-out infinite;
     }
 
-    /* موجات الصوت الفضائي في الشريط العلوي */
+    /* موجات الصوت الفضائي */
     @keyframes voiceWave {
       0%, 100% { height: 4px; }
       50% { height: 16px; }
@@ -689,31 +689,46 @@
     🤖
   </button>
 
-  <!-- نافذة المساعد الذكي التفاعلية -->
+  <!-- نافذة المساعد الذكي التفاعلية (نصي + ناطق مع زر كتم/تشغيل) -->
   <div id="ai-concierge-box" class="fixed bottom-22 left-5 right-5 sm:right-auto sm:w-96 z-40 hidden rounded-3xl border-2 border-cyan-400/60 bg-slate-950/95 backdrop-blur-xl p-5 shadow-[0_0_45px_rgba(0,243,255,0.3)]">
     <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
       <div class="flex items-center gap-2">
         <span class="text-xl">🤖</span>
         <div>
           <h4 class="text-sm font-black text-white">مساعد NAMER-IO الذكي</h4>
-          <p dir="ltr" class="text-[10px] font-tech text-cyan-400">HOLO-CONCIERGE • ONLINE</p>
+          <div class="flex items-center gap-1.5">
+            <p dir="ltr" class="text-[10px] font-tech text-cyan-400">HOLO-CONCIERGE</p>
+            <div id="concierge-visualizer" class="flex items-center gap-0.5 h-3">
+              <span class="voice-bar"></span>
+              <span class="voice-bar"></span>
+              <span class="voice-bar"></span>
+            </div>
+          </div>
         </div>
       </div>
-      <button onclick="toggleConcierge()" class="text-slate-400 hover:text-white font-bold">✕</button>
+
+      <!-- أزرار كتم الصوت وإغلاق النافذة -->
+      <div class="flex items-center gap-2">
+        <button id="concierge-mute-btn" onclick="toggleConciergeVoice()" title="تشغيل/كتم صوت المساعد" class="px-2.5 py-1 rounded-xl border border-cyan-500/40 bg-slate-900 text-cyan-300 hover:border-amber-400 transition flex items-center gap-1 text-xs font-bold">
+          <span id="concierge-mute-icon">🔊</span>
+          <span id="concierge-mute-label">صوت</span>
+        </button>
+        <button onclick="toggleConcierge()" class="w-7 h-7 rounded-lg bg-slate-900 text-slate-400 hover:text-white font-bold flex items-center justify-center">✕</button>
+      </div>
     </div>
 
-    <div id="concierge-reply" class="bg-slate-900/90 border border-cyan-500/30 rounded-2xl p-3.5 text-xs leading-relaxed text-cyan-100 mb-3 min-h-[75px]">
-      أهلاً بك في منظومة <strong>NAMER-IO</strong>! اختر أحد الأسئلة التقنية والتعريفية أدناه:
+    <div id="concierge-reply" class="bg-slate-900/90 border border-cyan-500/30 rounded-2xl p-3.5 text-xs leading-relaxed text-cyan-100 mb-3 min-h-[80px]">
+      أهلاً بك في منظومة <strong>NAMER-IO</strong>! اختر أحد الأسئلة التقنية والتعريفية أدناه لسماع وقراءة الإجابة:
     </div>
 
     <div class="space-y-1.5">
-      <button onclick="askConcierge('fashion')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-amber-300 font-bold transition">
+      <button onclick="askConcierge('fashion')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2.5 rounded-xl text-amber-300 font-bold transition">
         • كيف تعمل بطاقة NFC المدمجة في الملابس؟
       </button>
-      <button onclick="askConcierge('tech')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-cyan-200 font-bold transition">
+      <button onclick="askConcierge('tech')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2.5 rounded-xl text-cyan-200 font-bold transition">
         • ما هي التقنيات والمعايير الهندسية في بطاقات NFC؟
       </button>
-      <button onclick="askConcierge('order')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-emerald-300 font-bold transition">
+      <button onclick="askConcierge('order')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2.5 rounded-xl text-emerald-300 font-bold transition">
         • كيف أطلب بطاقة ذكية أو استشارة لمشروعي؟
       </button>
     </div>
@@ -761,9 +776,10 @@
     let currentSide = 'front';
     let currentSection = 'fashion';
     let audioEnabled = true;
+    let conciergeVoiceEnabled = true;
     let audioCtx = null;
 
-    // تأثير تموّجات الماء الضوئية (Water-Ripple) عند أي لمسة أو نقرة على الشاشة
+    // تأثير تموّجات الماء الضوئية (Water-Ripple) عند لمس الشاشة
     function spawnWaterRipple(x, y) {
       for (let i = 0; i < 3; i++) {
         setTimeout(() => {
@@ -791,7 +807,6 @@
       }
     }
 
-    // تخليق صوت فضائي لكائن من المستقبل (Alien Sci-Fi Vocal & Cosmic Synthesis)
     function playAlienVoiceSynth() {
       if (!audioEnabled) return;
       try {
@@ -853,21 +868,17 @@
       } catch (e) {}
     }
 
-    // النداء الترحيبي الفضائي بالصيغة المعتمدة بالعربية
-    function speakSpaceGreeting() {
-      playAlienVoiceSynth();
-      const visualizer = document.getElementById('voice-visualizer');
+    function speakTextAlien(text, visualizerId) {
+      const visualizer = document.getElementById(visualizerId);
       if (visualizer) visualizer.classList.add('speaking');
 
       if ('speechSynthesis' in window) {
         try {
           window.speechSynthesis.cancel();
-          const utterance = new SpeechSynthesisUtterance(
-            'اتصال وارد من بُعدِ المستقبل.. أهلاً بك في منظومة نامر آي أو.. حيث تلتقي أصالة النسيج بذكاء التقنية..'
-          );
+          const utterance = new SpeechSynthesisUtterance(text);
           utterance.lang = 'ar-SA';
-          utterance.pitch = 0.55;
-          utterance.rate = 0.84;
+          utterance.pitch = 0.58;
+          utterance.rate = 0.88;
           utterance.volume = 1.0;
 
           const voices = window.speechSynthesis.getVoices();
@@ -885,22 +896,61 @@
         } catch (e) {
           setTimeout(() => {
             if (visualizer) visualizer.classList.remove('speaking');
-          }, 4200);
+          }, 3000);
         }
       } else {
         setTimeout(() => {
           if (visualizer) visualizer.classList.remove('speaking');
-        }, 4200);
+        }, 3000);
+      }
+    }
+
+    function speakSpaceGreeting() {
+      playAlienVoiceSynth();
+      speakTextAlien(
+        'اتصال وارد من بُعدِ المستقبل.. أهلاً بك في منظومة نامر آي أو.. حيث تلتقي أصالة النسيج بذكاء التقنية..',
+        'voice-visualizer'
+      );
+    }
+
+    function updateConciergeMuteUI() {
+      const icon = document.getElementById('concierge-mute-icon');
+      const label = document.getElementById('concierge-mute-label');
+      const btn = document.getElementById('concierge-mute-btn');
+      if (conciergeVoiceEnabled) {
+        icon.textContent = '🔊';
+        label.textContent = 'صوت';
+        btn.className = 'px-2.5 py-1 rounded-xl border border-cyan-500/40 bg-slate-900 text-cyan-300 hover:border-amber-400 transition flex items-center gap-1 text-xs font-bold';
+      } else {
+        icon.textContent = '🔇';
+        label.textContent = 'مكتوم';
+        btn.className = 'px-2.5 py-1 rounded-xl border border-red-500/40 bg-slate-900 text-red-300 hover:border-red-400 transition flex items-center gap-1 text-xs font-bold';
+      }
+    }
+
+    function toggleConciergeVoice() {
+      conciergeVoiceEnabled = !conciergeVoiceEnabled;
+      updateConciergeMuteUI();
+      if (!conciergeVoiceEnabled && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const vis = document.getElementById('concierge-visualizer');
+        if (vis) vis.classList.remove('speaking');
+      } else {
+        playClick();
       }
     }
 
     function enterPortalWithVoice() {
+      conciergeVoiceEnabled = true;
+      updateConciergeMuteUI();
       const boot = document.getElementById('boot-screen');
       if (boot) boot.classList.add('fade-out');
       speakSpaceGreeting();
     }
 
     function enterPortalSilent() {
+      conciergeVoiceEnabled = false;
+      updateConciergeMuteUI();
       const boot = document.getElementById('boot-screen');
       if (boot) boot.classList.add('fade-out');
     }
@@ -997,18 +1047,34 @@
     function toggleConcierge() {
       playClick();
       const box = document.getElementById('ai-concierge-box');
+      const isHidden = box.classList.contains('hidden');
       box.classList.toggle('hidden');
+      if (!isHidden && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const vis = document.getElementById('concierge-visualizer');
+        if (vis) vis.classList.remove('speaking');
+      }
     }
 
+    // الإجابات النصية والمنطوقة في المساعد الذكي
     function askConcierge(topic) {
       playClick();
       const reply = document.getElementById('concierge-reply');
+      let spokenText = '';
+
       if (topic === 'fashion') {
         reply.innerHTML = 'يتم دمج <strong>بطاقة NFC ذكية</strong> مقاومة للغسيل والحرارة داخل نسيج السدو المطرز؛ بمجرد تمرير الجوال عليها تفتح شهادة التوثيق السحابية وهوية القطعة فوراً بدون تطبيقات.';
+        spokenText = 'يتم دمج بطاقة إن إف سي ذكية مقاومة للغسيل والحرارة داخل نسيج السدو المطرز.. بمجرد تمرير الجوال عليها تفتح شهادة التوثيق السحابية وهوية القطعة فوراً بدون تطبيقات.';
       } else if (topic === 'tech') {
         reply.innerHTML = 'نعتمد تقنية الاتصال قريب المدى بتردد <strong>13.56MHz</strong> وفق المعيار الدولي <strong>ISO/IEC 14443A</strong> باستخدام بطاقات <strong>NTAG215 و NTAG216</strong>، مع تشفير سحابي ديناميكي يعمل بلمسة واحدة على iOS و Android بدون تطبيقات.';
+        spokenText = 'نعتمد تقنية الاتصال قريب المدى بتردد ثلاثة عشر فاصلة ستة وخمسين ميجا هيرتز وفق المعيار الدولي آيزو، باستخدام بطاقات إن تاج مئتين وخمسة عشر ومئتين وستة عشر، مع تشفير سحابي ديناميكي يعمل بلمسة واحدة على آيفون وأندرويد بدون تطبيقات.';
       } else {
         reply.innerHTML = 'يسعدنا تواصلك! يمكنك الضغط على زر <strong>"تواصل مباشر عبر الواتساب"</strong> لطلب استشارة أو تنفيذ بطاقات ذكية وأزياء تفاعلية لعلامتك التجارية.';
+        spokenText = 'يسعدنا تواصلك.. يمكنك الضغط على زر تواصل مباشر عبر الواتساب لطلب استشارة أو تنفيذ بطاقات ذكية وأزياء تفاعلية لعلامتك التجارية.';
+      }
+
+      if (conciergeVoiceEnabled) {
+        speakTextAlien(spokenText, 'concierge-visualizer');
       }
     }
 
