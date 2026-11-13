@@ -46,6 +46,17 @@
       pointer-events: none;
     }
 
+    /* خطوط السدو الهندسية الخفية في الخلفية (Cyber-Heritage Sadu Grid) */
+    .sadu-cyber-pattern {
+      background-image:
+        linear-gradient(45deg, rgba(212, 175, 55, 0.04) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(212, 175, 55, 0.04) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(0, 243, 255, 0.04) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(0, 243, 255, 0.04) 75%);
+      background-size: 36px 36px;
+      background-position: 0 0, 0 18px, 18px -18px, -18px 0;
+    }
+
     /* تأثير تموّجات الماء الضوئية عند لمس الشاشة */
     .water-ripple-ring {
       position: fixed;
@@ -128,12 +139,13 @@
     .spatial-deck {
       position: relative;
       z-index: 10;
-      background: linear-gradient(155deg, rgba(6, 18, 38, 0.84) 0%, rgba(2, 8, 20, 0.95) 100%);
+      background: linear-gradient(155deg, rgba(6, 18, 38, 0.86) 0%, rgba(2, 8, 20, 0.96) 100%);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(0, 243, 255, 0.38);
+      border: 1px solid rgba(212, 175, 55, 0.38);
       box-shadow:
-        0 0 70px rgba(0, 243, 255, 0.18),
+        0 0 70px rgba(0, 243, 255, 0.16),
+        0 0 30px rgba(212, 175, 55, 0.12),
         inset 0 0 40px rgba(0, 243, 255, 0.06);
       border-radius: 30px;
       overflow: hidden;
@@ -160,7 +172,7 @@
       position: absolute;
       width: 22px;
       height: 22px;
-      border-color: var(--cyan);
+      border-color: var(--gold);
       pointer-events: none;
       z-index: 30;
     }
@@ -192,8 +204,8 @@
     }
 
     .telemetry-pod {
-      background: linear-gradient(90deg, rgba(0, 243, 255, 0.12), rgba(212, 175, 55, 0.12), rgba(0, 243, 255, 0.12));
-      border: 1px solid rgba(0, 243, 255, 0.4);
+      background: linear-gradient(90deg, rgba(0, 243, 255, 0.12), rgba(212, 175, 55, 0.14), rgba(0, 243, 255, 0.12));
+      border: 1px solid rgba(212, 175, 55, 0.38);
       clip-path: polygon(16px 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 16px 100%, 0 50%);
       padding: 12px 24px;
       text-align: center;
@@ -202,19 +214,37 @@
       text-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
     }
 
+    /* البطاقة الكريستالية مع تأثير الانعكاس الزجاجي الحي */
     .crystal-console {
       background: linear-gradient(165deg, rgba(240, 249, 255, 0.94) 0%, rgba(219, 240, 254, 0.89) 55%, rgba(235, 248, 255, 0.95) 100%);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       color: #091326;
       border-radius: 26px;
-      border: 1.5px solid rgba(0, 243, 255, 0.65);
+      border: 1.5px solid rgba(212, 175, 55, 0.65);
       box-shadow:
         0 25px 60px rgba(0, 0, 0, 0.65),
-        0 0 35px rgba(0, 243, 255, 0.3),
+        0 0 35px rgba(0, 243, 255, 0.28),
         inset 0 0 25px rgba(255, 255, 255, 0.8);
       position: relative;
       overflow: hidden;
+    }
+
+    .crystal-console::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 45%;
+      height: 200%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+      transform: rotate(25deg);
+      animation: glassSheen 7s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes glassSheen {
+      0%, 65% { left: -60%; }
+      100% { left: 140%; }
     }
 
     .cyber-btn-primary {
@@ -290,7 +320,7 @@
 
     .holo-emitter-base {
       height: 22px;
-      background: radial-gradient(ellipse at center, rgba(0, 243, 255, 0.65) 0%, rgba(212, 175, 55, 0.25) 45%, transparent 75%);
+      background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.45) 0%, rgba(0, 243, 255, 0.35) 45%, transparent 75%);
       filter: blur(5px);
     }
   </style>
@@ -318,12 +348,12 @@
   <div class="nebula-glow"></div>
 
   <!-- شريط القيادة العلوي -->
-  <header class="relative z-10 w-full max-w-6xl flex flex-col lg:flex-row items-center justify-between gap-4 mb-5 p-4 md:px-6 md:py-4 rounded-3xl border border-cyan-400/40 bg-slate-950/80 backdrop-blur-xl shadow-[0_0_35px_rgba(0,243,255,0.15)]">
+  <header class="relative z-10 w-full max-w-6xl flex flex-col lg:flex-row items-center justify-between gap-4 mb-5 p-4 md:px-6 md:py-4 rounded-3xl border border-amber-400/35 bg-slate-950/80 backdrop-blur-xl shadow-[0_0_35px_rgba(0,243,255,0.15)]">
     
     <!-- الهوية والمفاعل الضوئي -->
     <div class="w-full lg:w-auto flex items-center justify-between gap-3">
       <div class="flex items-center gap-3.5">
-        <div class="w-13 h-13 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br from-cyan-400 via-blue-600 to-slate-900 p-[2px] shadow-lg shadow-cyan-500/30 relative sonar-dot shrink-0">
+        <div class="w-13 h-13 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br from-amber-300 via-cyan-400 to-slate-900 p-[2px] shadow-lg shadow-cyan-500/30 relative sonar-dot shrink-0">
           <div class="w-full h-full rounded-[14px] bg-slate-950 flex items-center justify-center">
             <span class="font-tech font-black text-transparent bg-clip-text bg-gradient-to-tr from-cyan-300 to-amber-300 text-xl md:text-2xl">N</span>
           </div>
@@ -331,7 +361,7 @@
         <div>
           <div class="flex items-center gap-2 flex-wrap">
             <h1 class="text-xl md:text-2xl font-black tracking-wide text-white">نبيل النمر</h1>
-            <span dir="ltr" class="font-tech text-xs md:text-sm px-3 py-0.5 rounded-full bg-gradient-to-r from-cyan-500/20 to-amber-500/20 border border-cyan-400/60 text-cyan-200 font-bold tracking-wider">NAMER-IO</span>
+            <span dir="ltr" class="font-tech text-xs md:text-sm px-3 py-0.5 rounded-full bg-gradient-to-r from-cyan-500/20 to-amber-500/20 border border-amber-400/60 text-amber-200 font-bold tracking-wider">NAMER-IO</span>
           </div>
           <p class="text-xs md:text-sm text-cyan-200/90 mt-0.5">مبتكر ومطور تقنيات NFC المدمجة بالأزياء والأنظمة التفاعلية</p>
         </div>
@@ -367,9 +397,9 @@
 
   </header>
 
-  <!-- المنصة الهولوجرامية الفضائية -->
+  <!-- المنصة الهولوجرامية الفضائية (مع نقوش السدو الهندسية الخفية) -->
   <main class="relative z-10 w-full max-w-6xl my-auto">
-    <div id="hud-container" class="spatial-deck p-3.5 sm:p-5 md:p-8">
+    <div id="hud-container" class="spatial-deck sadu-cyber-pattern p-3.5 sm:p-5 md:p-8">
       
       <div class="hud-bracket hud-tl"></div>
       <div class="hud-bracket hud-tr"></div>
@@ -377,7 +407,7 @@
       <div class="hud-bracket hud-br"></div>
 
       <!-- شريط القياس العلوي -->
-      <div dir="ltr" class="flex items-center justify-between text-[11px] md:text-xs font-tech text-cyan-300/90 mb-5 pb-3 border-b border-cyan-500/25 px-2">
+      <div dir="ltr" class="flex items-center justify-between text-[11px] md:text-xs font-tech text-cyan-300/90 mb-5 pb-3 border-b border-amber-400/25 px-2">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
           <span id="sys-status-text">SPATIAL.PORTAL // KSA-EDITION</span>
@@ -528,7 +558,7 @@
               </div>
 
               <!-- معاينة قسم الأزياء -->
-              <div id="card-preview-fashion" class="w-full h-56 rounded-2xl overflow-hidden bg-slate-900 border-2 border-cyan-500/30 mb-4 relative shadow-inner">
+              <div id="card-preview-fashion" class="w-full h-56 rounded-2xl overflow-hidden bg-slate-900 border-2 border-amber-400/50 mb-4 relative shadow-inner">
                 <img id="card-preview-img" src="model-back.png" alt="معاينة التفاصيل الخلفية" class="w-full h-full object-cover object-top" onerror="this.src='model-front.png'">
                 <div class="absolute bottom-2 right-2 bg-slate-950/90 text-amber-300 text-xs font-bold px-3 py-1 rounded-lg border border-amber-400/40">
                   إصدار الرياض • قصر المصمك
@@ -620,7 +650,7 @@
   </main>
 
   <!-- رادار "اكتشف السعودية" التفاعلي -->
-  <section class="relative z-10 w-full max-w-6xl mt-6 p-4 md:p-6 rounded-3xl border border-cyan-500/35 bg-slate-950/80 backdrop-blur-xl shadow-lg">
+  <section class="relative z-10 w-full max-w-6xl mt-6 p-4 md:p-6 rounded-3xl border border-amber-400/35 bg-slate-950/80 backdrop-blur-xl shadow-lg">
     <div class="flex flex-col md:flex-row items-center justify-between gap-5">
       
       <div class="flex items-center gap-4">
@@ -658,39 +688,25 @@
     </div>
   </section>
 
-  <!-- شريط المؤشرات والخبرة -->
-  <section class="relative z-10 w-full max-w-6xl mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
-    <div class="px-4 py-3 rounded-2xl border border-amber-400/35 bg-slate-950/75 backdrop-blur-md flex items-center justify-between shadow-md">
-      <span class="text-xs text-slate-300">الخبرة التسويقية:</span>
-      <span class="text-xs md:text-sm font-black text-amber-300">25+ عاماً في الأزياء الرجالية</span>
-    </div>
-    <div class="px-4 py-3 rounded-2xl border border-cyan-400/35 bg-slate-950/75 backdrop-blur-md flex items-center justify-between shadow-md">
-      <span class="text-xs text-slate-300">نطاق المشروع:</span>
-      <span class="text-xs md:text-sm font-black text-cyan-300">كل المملكة (انطلاقاً من الرياض)</span>
-    </div>
-    <div class="px-4 py-3 rounded-2xl border border-emerald-400/35 bg-slate-950/75 backdrop-blur-md flex items-center justify-between shadow-md">
-      <span class="text-xs text-slate-300">التقنية المبتكرة:</span>
-      <span class="text-xs md:text-sm font-black text-emerald-300">بطاقة NFC مدمجة بالسدو</span>
-    </div>
-  </section>
-
   <!-- تذييل الصفحة الرسمي -->
-  <footer class="relative z-10 w-full max-w-6xl mt-4 px-4 py-4 rounded-2xl border border-cyan-500/30 bg-slate-950/75 backdrop-blur-md text-center flex flex-col md:flex-row items-center justify-between gap-2.5 text-xs md:text-sm text-cyan-200/85">
+  <footer class="relative z-10 w-full max-w-6xl mt-5 px-4 py-4 rounded-2xl border border-cyan-500/30 bg-slate-950/75 backdrop-blur-md text-center flex flex-col md:flex-row items-center justify-between gap-2.5 text-xs md:text-sm text-cyan-200/85">
     <div>© 2026 نبيل النمر (NAMER-IO) — اختصاصي تسويق في مجال الملابس الرجالية</div>
-    <div dir="ltr" class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 font-tech">
+    <div dir="ltr" class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 font-tech">
       <a href="mailto:Ibn.alnamer@gmail.com" class="hover:text-cyan-300 whitespace-nowrap">Ibn.alnamer@gmail.com</a>
       <span class="hidden sm:inline text-amber-400">•</span>
       <a href="https://wa.me/966502777884" target="_blank" class="hover:text-amber-300 whitespace-nowrap font-bold text-cyan-300">+966 50 277 7884</a>
+      <span class="text-amber-400">•</span>
+      <a href="https://wa.me/966560564719" target="_blank" class="hover:text-amber-300 whitespace-nowrap font-bold text-amber-300">+966 56 056 4719</a>
     </div>
   </footer>
 
   <!-- زر المساعد الذكي العائم -->
-  <button onclick="toggleConcierge()" class="fixed bottom-5 left-5 z-40 w-14 h-14 rounded-2xl bg-slate-950 border-2 border-cyan-400 shadow-[0_0_25px_rgba(0,243,255,0.5)] flex items-center justify-center text-2xl hover:scale-105 transition sonar-dot" title="مساعد NAMER-IO الذكي">
+  <button onclick="toggleConcierge()" class="fixed bottom-5 left-5 z-40 w-14 h-14 rounded-2xl bg-slate-950 border-2 border-amber-400 shadow-[0_0_25px_rgba(212,175,55,0.5)] flex items-center justify-center text-2xl hover:scale-105 transition sonar-dot" title="مساعد NAMER-IO الذكي">
     🤖
   </button>
 
-  <!-- نافذة المساعد الذكي التفاعلية (نصي + ناطق مع زر كتم/تشغيل) -->
-  <div id="ai-concierge-box" class="fixed bottom-22 left-5 right-5 sm:right-auto sm:w-96 z-40 hidden rounded-3xl border-2 border-cyan-400/60 bg-slate-950/95 backdrop-blur-xl p-5 shadow-[0_0_45px_rgba(0,243,255,0.3)]">
+  <!-- نافذة المساعد الذكي التفاعلية الشاملة (5 محاور + شريط تواصل فوري + زر كتم) -->
+  <div id="ai-concierge-box" class="fixed bottom-22 left-4 right-4 sm:right-auto sm:w-[410px] z-40 hidden rounded-3xl border-2 border-cyan-400/60 bg-slate-950/95 backdrop-blur-xl p-5 shadow-[0_0_50px_rgba(0,243,255,0.35)] max-h-[82vh] overflow-y-auto">
     <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
       <div class="flex items-center gap-2">
         <span class="text-xl">🤖</span>
@@ -707,7 +723,6 @@
         </div>
       </div>
 
-      <!-- أزرار كتم الصوت وإغلاق النافذة -->
       <div class="flex items-center gap-2">
         <button id="concierge-mute-btn" onclick="toggleConciergeVoice()" title="تشغيل/كتم صوت المساعد" class="px-2.5 py-1 rounded-xl border border-cyan-500/40 bg-slate-900 text-cyan-300 hover:border-amber-400 transition flex items-center gap-1 text-xs font-bold">
           <span id="concierge-mute-icon">🔊</span>
@@ -717,20 +732,46 @@
       </div>
     </div>
 
-    <div id="concierge-reply" class="bg-slate-900/90 border border-cyan-500/30 rounded-2xl p-3.5 text-xs leading-relaxed text-cyan-100 mb-3 min-h-[80px]">
-      أهلاً بك في منظومة <strong>NAMER-IO</strong>! اختر أحد الأسئلة التقنية والتعريفية أدناه لسماع وقراءة الإجابة:
+    <div id="concierge-reply" class="bg-slate-900/90 border border-cyan-500/30 rounded-2xl p-3.5 text-xs leading-relaxed text-cyan-100 mb-3 min-h-[76px]">
+      أهلاً بك في منظومة <strong>NAMER-IO</strong>! اختر أحد الأسئلة أدناه لسماع وقراءة التفاصيل التقنية والتسويقية وطرق التواصل مع المطور:
     </div>
 
-    <div class="space-y-1.5">
-      <button onclick="askConcierge('fashion')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2.5 rounded-xl text-amber-300 font-bold transition">
-        • كيف تعمل بطاقة NFC المدمجة في الملابس؟
+    <div class="space-y-1.5 mb-3">
+      <button onclick="askConcierge('fashion')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-amber-300 font-bold transition">
+        1. كيف تعمل بطاقة NFC المدمجة في الملابس؟
       </button>
-      <button onclick="askConcierge('tech')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2.5 rounded-xl text-cyan-200 font-bold transition">
-        • ما هي التقنيات والمعايير الهندسية في بطاقات NFC؟
+      <button onclick="askConcierge('tech')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-cyan-200 font-bold transition">
+        2. ما هي التقنيات والمعايير الهندسية في بطاقات NFC؟
       </button>
-      <button onclick="askConcierge('order')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2.5 rounded-xl text-emerald-300 font-bold transition">
-        • كيف أطلب بطاقة ذكية أو استشارة لمشروعي؟
+      <button onclick="askConcierge('vision')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-purple-300 font-bold transition">
+        3. ما هي الرؤية التسويقية ونطاق مشروع "اكتشف السعودية"؟
       </button>
+      <button onclick="askConcierge('wholesale')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-sky-300 font-bold transition">
+        4. هل توفرون حلول الجملة والتصنيع للعلامات التجارية؟
+      </button>
+      <button onclick="askConcierge('contact')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-emerald-300 font-bold transition">
+        5. كيف أتواصل مع المطور لطلب تنفيذ مشروع أو استشارة؟
+      </button>
+    </div>
+
+    <!-- شريط التواصل الفوري مع المطور -->
+    <div class="pt-2.5 border-t border-slate-800 space-y-1.5">
+      <div class="grid grid-cols-2 gap-1.5">
+        <a href="https://wa.me/966502777884" target="_blank" onclick="playClick()" class="py-2 px-2 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-600/30 text-[11px] font-bold text-center transition">
+          💬 واتساب (0502777884)
+        </a>
+        <a href="https://wa.me/966560564719" target="_blank" onclick="playClick()" class="py-2 px-2 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-600/30 text-[11px] font-bold text-center transition">
+          💬 واتساب (0560564719)
+        </a>
+      </div>
+      <div class="grid grid-cols-2 gap-1.5">
+        <a href="mailto:Ibn.alnamer@gmail.com" onclick="playClick()" class="py-2 px-2 rounded-xl bg-cyan-500/15 border border-cyan-500/35 text-cyan-200 hover:bg-cyan-500/25 text-[11px] font-bold text-center transition">
+          ✉️ إرسال بريد إلكتروني
+        </a>
+        <button onclick="downloadVCard()" class="py-2 px-2 rounded-xl bg-amber-500/15 border border-amber-400/40 text-amber-300 hover:bg-amber-500/25 text-[11px] font-bold text-center transition">
+          📇 حفظ بطاقة المطور
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1056,7 +1097,7 @@
       }
     }
 
-    // الإجابات النصية والمنطوقة في المساعد الذكي
+    // الإجابات النصية والمنطوقة في المساعد الذكي (5 محاور شاملة)
     function askConcierge(topic) {
       playClick();
       const reply = document.getElementById('concierge-reply');
@@ -1068,9 +1109,15 @@
       } else if (topic === 'tech') {
         reply.innerHTML = 'نعتمد تقنية الاتصال قريب المدى بتردد <strong>13.56MHz</strong> وفق المعيار الدولي <strong>ISO/IEC 14443A</strong> باستخدام بطاقات <strong>NTAG215 و NTAG216</strong>، مع تشفير سحابي ديناميكي يعمل بلمسة واحدة على iOS و Android بدون تطبيقات.';
         spokenText = 'نعتمد تقنية الاتصال قريب المدى بتردد ثلاثة عشر فاصلة ستة وخمسين ميجا هيرتز وفق المعيار الدولي آيزو، باستخدام بطاقات إن تاج مئتين وخمسة عشر ومئتين وستة عشر، مع تشفير سحابي ديناميكي يعمل بلمسة واحدة على آيفون وأندرويد بدون تطبيقات.';
+      } else if (topic === 'vision') {
+        reply.innerHTML = 'ينطلق المشروع بخبرة تسويقية تمتد لـ <strong>25 عاماً في مجال الملابس الرجالية</strong> بقيادة نبيل النمر، ويهدف لتغطية <strong>كافة مناطق المملكة انطلاقاً من الرياض</strong> عبر مجموعة اكتشف السعودية.';
+        spokenText = 'ينطلق المشروع بخبرة تسويقية تمتد لخمسة وعشرين عاماً في مجال الملابس الرجالية بقيادة نبيل النمر، ويهدف لتغطية كافة مناطق المملكة انطلاقاً من الرياض عبر مجموعة اكتشف السعودية.';
+      } else if (topic === 'wholesale') {
+        reply.innerHTML = 'نعم، نوفر منظومة متكاملة للشركات والعلامات التجارية تشمل <strong>التصميم، الطباعة الاحترافية، التوزيع بالجملة (بالشدة)</strong>، وبرمجة ودمج بطاقات NFC المخصصة لهويتكم التجارية.';
+        spokenText = 'نعم، نوفر منظومة متكاملة للشركات والعلامات التجارية تشمل التصميم والطباعة الاحترافية والتوزيع بالجملة، وبرمجة ودمج بطاقات إن إف سي المخصصة لهويتكم التجارية.';
       } else {
-        reply.innerHTML = 'يسعدنا تواصلك! يمكنك الضغط على زر <strong>"تواصل مباشر عبر الواتساب"</strong> لطلب استشارة أو تنفيذ بطاقات ذكية وأزياء تفاعلية لعلامتك التجارية.';
-        spokenText = 'يسعدنا تواصلك.. يمكنك الضغط على زر تواصل مباشر عبر الواتساب لطلب استشارة أو تنفيذ بطاقات ذكية وأزياء تفاعلية لعلامتك التجارية.';
+        reply.innerHTML = 'يسعدنا تواصلك المباشر مع المطور نبيل النمر عبر الواتساب على الرقمين <strong>0502777884</strong> أو <strong>0560564719</strong>، أو عبر البريد الإلكتروني <strong>Ibn.alnamer@gmail.com</strong> من الأزرار أدناه.';
+        spokenText = 'يسعدنا تواصلك المباشر مع المطور نبيل النمر عبر الواتساب أو البريد الإلكتروني من خلال أزرار التواصل المباشر الظاهرة أسفل النافذة.';
       }
 
       if (conciergeVoiceEnabled) {
@@ -1087,6 +1134,7 @@
         'FN:نبيل النمر | NAMER-IO',
         'TITLE:مبتكر ومطور تقنيات NFC المدمجة بالأزياء والأنظمة التفاعلية',
         'TEL;TYPE=CELL,VOICE:+966502777884',
+        'TEL;TYPE=WORK,VOICE:+966560564719',
         'EMAIL;TYPE=PREF,INTERNET:Ibn.alnamer@gmail.com',
         'URL:https://namer-io.github.io',
         'ADR;TYPE=WORK:;;الرياض;;;المملكة العربية السعودية',
