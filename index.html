@@ -844,15 +844,15 @@
     🤖
   </button>
 
-  <!-- نافذة المساعد الذكي التفاعلية الشاملة -->
-  <div id="ai-concierge-box" class="fixed bottom-22 left-4 right-4 sm:right-auto sm:w-[410px] z-40 hidden rounded-3xl border-2 border-cyan-400/60 bg-slate-950/95 backdrop-blur-xl p-5 shadow-[0_0_50px_rgba(0,243,255,0.35)] max-h-[82vh] overflow-y-auto">
+  <!-- نافذة المساعد الذكي التفاعلية المتكيفة مع كل قسم + مربع الكتابة الحر -->
+  <div id="ai-concierge-box" class="fixed bottom-22 left-4 right-4 sm:right-auto sm:w-[415px] z-40 hidden rounded-3xl border-2 border-cyan-400/60 bg-slate-950/95 backdrop-blur-xl p-5 shadow-[0_0_50px_rgba(0,243,255,0.35)] max-h-[85vh] overflow-y-auto custom-scroll">
     <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
       <div class="flex items-center gap-2">
         <span class="text-xl">🤖</span>
         <div>
           <h4 class="text-sm font-black text-white">مساعد NAMER-IO الذكي</h4>
           <div class="flex items-center gap-1.5">
-            <p dir="ltr" class="text-[10px] font-tech text-cyan-400">HOLO-CONCIERGE</p>
+            <p dir="ltr" id="concierge-mode-badge" class="text-[10px] font-tech text-cyan-400">FASHION AI MODE</p>
             <div id="concierge-visualizer" class="flex items-center gap-0.5 h-3">
               <span class="voice-bar"></span>
               <span class="voice-bar"></span>
@@ -871,25 +871,48 @@
       </div>
     </div>
 
+    <!-- صندوق الرد النصي والمنطوق -->
     <div id="concierge-reply" class="bg-slate-900/90 border border-cyan-500/30 rounded-2xl p-3.5 text-xs leading-relaxed text-cyan-100 mb-3 min-h-[76px]">
-      أهلاً بك في منظومة <strong>NAMER-IO</strong>! اختر أحد الأسئلة أدناه لسماع وقراءة التفاصيل التقنية والتسويقية وطرق التواصل مع المطور:
+      أهلاً بك في قسم <strong>الأزياء المدمجة بـ NFC</strong>! اختر سؤالاً جاهزاً أو اكتب سؤالك الخاص في الأسفل وسأجيبك فوراً:
     </div>
 
-    <div class="space-y-1.5 mb-3">
-      <button onclick="askConcierge('fashion')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-amber-300 font-bold transition">
-        1. كيف تعمل بطاقة NFC المدمجة في الملابس؟
+    <!-- مربع الكتابة الحر للزائر -->
+    <form onsubmit="handleCustomQuestion(event)" class="flex items-center gap-1.5 mb-3">
+      <input id="concierge-custom-input" type="text" placeholder="اكتب سؤالك هنا (مثلاً: هل يتحمل الغسيل؟ كم السعر؟)..." class="flex-1 bg-slate-900/95 border border-cyan-500/40 focus:border-amber-400 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-400 outline-none transition" />
+      <button type="submit" class="px-3.5 py-2 rounded-xl cyber-btn-primary font-black text-xs shrink-0">
+        إرسال
       </button>
-      <button onclick="askConcierge('tech')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-cyan-200 font-bold transition">
-        2. ما هي التقنيات والمعايير الهندسية في بطاقات NFC؟
+    </form>
+
+    <!-- أسئلة قسم الأزياء (تظهر تلقائياً في قسم الأزياء) -->
+    <div id="concierge-questions-fashion" class="space-y-1.5 mb-3">
+      <button onclick="askConcierge('fashion_nfc')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-amber-300 font-bold transition">
+        1. كيف تعمل بطاقة NFC المدمجة في نسيج السدو؟
       </button>
-      <button onclick="askConcierge('vision')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-purple-300 font-bold transition">
-        3. ما هي الرؤية التسويقية ونطاق مشروع "اكتشف السعودية"؟
+      <button onclick="askConcierge('fashion_vision')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-cyan-200 font-bold transition">
+        2. ما هي الرؤية التسويقية ونطاق مشروع "اكتشف السعودية"؟
       </button>
-      <button onclick="askConcierge('wholesale')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-sky-300 font-bold transition">
-        4. هل توفرون حلول الجملة والتصنيع للعلامات التجارية؟
+      <button onclick="askConcierge('fashion_wholesale')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-purple-300 font-bold transition">
+        3. هل توفرون حلول الجملة والتصنيع للعلامات التجارية؟
       </button>
       <button onclick="askConcierge('contact')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-emerald-300 font-bold transition">
-        5. كيف أتواصل مع المطور لطلب تنفيذ مشروع أو استشارة؟
+        4. كيف أتواصل مع المطور لطلب تنفيذ مشروع أو استشارة؟
+      </button>
+    </div>
+
+    <!-- أسئلة قسم البطائق الذكية (تظهر تلقائياً في قسم البطائق) -->
+    <div id="concierge-questions-cards" class="hidden space-y-1.5 mb-3">
+      <button onclick="askConcierge('cards_apps')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-amber-300 font-bold transition">
+        1. ما هي التطبيقات الحية المتوفرة في منظومة البطائق الذكية؟
+      </button>
+      <button onclick="askConcierge('cards_tech')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-cyan-200 font-bold transition">
+        2. ما هي التقنيات والمعايير الهندسية في بطاقات NFC؟
+      </button>
+      <button onclick="askConcierge('cards_custom')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-purple-300 font-bold transition">
+        3. هل يمكن برمجة بطاقات ذكية مخصصة لشركتي أو فعاليتي؟
+      </button>
+      <button onclick="askConcierge('contact')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-emerald-300 font-bold transition">
+        4. كيف أتواصل مع المطور لطلب بطاقات ذكية أو نظام خاص؟
       </button>
     </div>
 
@@ -1233,30 +1256,116 @@
       }
     }
 
+    // دالة مساعدة لعرض الرد النصي ونطقه بالصوت الفضائي
+    function deliverConciergeResponse(htmlReply, spokenReply) {
+      const replyBox = document.getElementById('concierge-reply');
+      replyBox.innerHTML = htmlReply;
+      if (conciergeVoiceEnabled && spokenReply) {
+        speakTextAlien(spokenReply, 'concierge-visualizer');
+      }
+    }
+
+    // الردود على الأزرار الجاهزة (مخصصة لكل قسم)
     function askConcierge(topic) {
       playClick();
-      const reply = document.getElementById('concierge-reply');
-      let spokenText = '';
-
-      if (topic === 'fashion') {
-        reply.innerHTML = 'يتم دمج <strong>بطاقة NFC ذكية</strong> مقاومة للغسيل والحرارة داخل نسيج السدو المطرز؛ بمجرد تمرير الجوال عليها تفتح شهادة التوثيق السحابية وهوية القطعة فوراً بدون تطبيقات.';
-        spokenText = 'يتم دمج بطاقة إن إف سي ذكية مقاومة للغسيل والحرارة داخل نسيج السدو المطرز.. بمجرد تمرير الجوال عليها تفتح شهادة التوثيق السحابية وهوية القطعة فوراً بدون تطبيقات.';
-      } else if (topic === 'tech') {
-        reply.innerHTML = 'نعتمد تقنية الاتصال قريب المدى بتردد <strong>13.56MHz</strong> وفق المعيار الدولي <strong>ISO/IEC 14443A</strong> باستخدام بطاقات <strong>NTAG215 و NTAG216</strong>، مع تشفير سحابي ديناميكي يعمل بلمسة واحدة على iOS و Android بدون تطبيقات.';
-        spokenText = 'نعتمد تقنية الاتصال قريب المدى بتردد ثلاثة عشر فاصلة ستة وخمسين ميجا هيرتز وفق المعيار الدولي آيزو، باستخدام بطاقات إن تاج مئتين وخمسة عشر ومئتين وستة عشر، مع تشفير سحابي ديناميكي يعمل بلمسة واحدة على آيفون وأندرويد بدون تطبيقات.';
-      } else if (topic === 'vision') {
-        reply.innerHTML = 'ينطلق المشروع بخبرة تسويقية تمتد لـ <strong>25 عاماً في مجال الملابس الرجالية</strong>، ويهدف لتغطية <strong>كافة مناطق المملكة انطلاقاً من الرياض</strong> عبر مجموعة اكتشف السعودية.';
-        spokenText = 'ينطلق المشروع بخبرة تسويقية تمتد لخمسة وعشرين عاماً في مجال الملابس الرجالية، ويهدف لتغطية كافة مناطق المملكة انطلاقاً من الرياض عبر مجموعة اكتشف السعودية.';
-      } else if (topic === 'wholesale') {
-        reply.innerHTML = 'نعم، نوفر منظومة متكاملة للشركات والعلامات التجارية تشمل <strong>التصميم، الطباعة الاحترافية، التوزيع بالجملة (بالشدة)</strong>، وبرمجة ودمج بطاقات NFC المخصصة لهويتكم التجارية.';
-        spokenText = 'نعم، نوفر منظومة متكاملة للشركات والعلامات التجارية تشمل التصميم والطباعة الاحترافية والتوزيع بالجملة، وبرمجة ودمج بطاقات إن إف سي المخصصة لهويتكم التجارية.';
+      if (topic === 'fashion_nfc') {
+        deliverConciergeResponse(
+          'يتم دمج <strong>بطاقة NFC ذكية</strong> مقاومة للغسيل والحرارة داخل نسيج السدو المطرز؛ بمجرد تمرير الجوال عليها تفتح شهادة التوثيق السحابية وهوية القطعة فوراً بدون تطبيقات.',
+          'يتم دمج بطاقة إن إف سي ذكية مقاومة للغسيل والحرارة داخل نسيج السدو المطرز.. بمجرد تمرير الجوال عليها تفتح شهادة التوثيق السحابية وهوية القطعة فوراً بدون تطبيقات.'
+        );
+      } else if (topic === 'fashion_vision') {
+        deliverConciergeResponse(
+          'ينطلق المشروع بخبرة تسويقية تمتد لـ <strong>25 عاماً في مجال الملابس الرجالية</strong>، ويهدف لتغطية <strong>كافة مناطق المملكة انطلاقاً من الرياض</strong> عبر مجموعة اكتشف السعودية.',
+          'ينطلق المشروع بخبرة تسويقية تمتد لخمسة وعشرين عاماً في مجال الملابس الرجالية، ويهدف لتغطية كافة مناطق المملكة انطلاقاً من الرياض عبر مجموعة اكتشف السعودية.'
+        );
+      } else if (topic === 'fashion_wholesale') {
+        deliverConciergeResponse(
+          'نعم، نوفر منظومة متكاملة للشركات والعلامات التجارية تشمل <strong>التصميم، الطباعة الاحترافية، التوزيع بالجملة (بالشدة)</strong>، وبرمجة ودمج بطاقات NFC المخصصة لهويتكم التجارية.',
+          'نعم، نوفر منظومة متكاملة للشركات والعلامات التجارية تشمل التصميم والطباعة الاحترافية والتوزيع بالجملة، وبرمجة ودمج بطاقات إن إف سي المخصصة لهويتكم التجارية.'
+        );
+      } else if (topic === 'cards_apps') {
+        deliverConciergeResponse(
+          'تضم المنظومة <strong>4 تطبيقات حية منفذة</strong>: بطاقة الأعمال الذكية (<strong>Smart-Pass</strong>)، سجل الرحّالة التفاعلي (<strong>Traveler-Chronicle</strong>)، بطاقة الملاعب (<strong>Matchday</strong>)، ومنيو المقاهي الذكي (<strong>Namq.cafe</strong>).',
+          'تضم المنظومة أربعة تطبيقات حية منفذة: بطاقة الأعمال الذكية سمارت باس، وسجل الرحالة التفاعلي، وبطاقة الملاعب الذكية، ومنيو المقاهي الذكي.'
+        );
+      } else if (topic === 'cards_tech') {
+        deliverConciergeResponse(
+          'نعتمد تقنية الاتصال قريب المدى بتردد <strong>13.56MHz</strong> وفق المعيار الدولي <strong>ISO/IEC 14443A</strong> باستخدام شرائح <strong>NTAG215 و NTAG216</strong>، مع تشفير سحابي يعمل بلمسة واحدة على iOS و Android بدون تطبيقات.',
+          'نعتمد تقنية الاتصال قريب المدى بتردد ثلاثة عشر فاصلة ستة وخمسين ميجا هيرتز وفق المعيار الدولي آيزو، باستخدام شرائح إن تاج مئتين وخمسة عشر ومئتين وستة عشر، مع تشفير سحابي يعمل بلمسة واحدة على آيفون وأندرويد بدون تطبيقات.'
+        );
+      } else if (topic === 'cards_custom') {
+        deliverConciergeResponse(
+          'بكل تأكيد؛ نصمم ونبرمج <strong>بطاقات NFC ذكية وواجهات سحابية مخصصة</strong> للشركات، المقاهي والمطاعم، الفعاليات السياحية، والأندية الرياضية بهويتكم الكاملة.',
+          'بكل تأكيد.. نصمم ونبرمج بطاقات إن إف سي ذكية وواجهات سحابية مخصصة للشركات والمقاهي والمطاعم والفعاليات السياحية والأندية الرياضية بهويتكم الكاملة.'
+        );
       } else {
-        reply.innerHTML = 'يسعدنا تواصلك المباشر مع المطور نبيل النمر عبر الواتساب على الرقمين <strong>0502777884</strong> أو <strong>0560564719</strong>، أو عبر البريد الإلكتروني <strong>Ibn.alnamer@gmail.com</strong> من الأزرار أدناه.';
-        spokenText = 'يسعدنا تواصلك المباشر مع المطور نبيل النمر عبر الواتساب أو البريد الإلكتروني من خلال أزرار التواصل المباشر الظاهرة أسفل النافذة.';
+        deliverConciergeResponse(
+          'يسعدنا تواصلك المباشر مع المطور نبيل النمر عبر الواتساب على الرقمين <strong>0502777884</strong> أو <strong>0560564719</strong>، أو عبر البريد الإلكتروني <strong>Ibn.alnamer@gmail.com</strong> من الأزرار أدناه.',
+          'يسعدنا تواصلك المباشر مع المطور نبيل النمر عبر الواتساب أو البريد الإلكتروني من خلال أزرار التواصل المباشر الظاهرة أسفل النافذة.'
+        );
       }
+    }
 
-      if (conciergeVoiceEnabled) {
-        speakTextAlien(spokenText, 'concierge-visualizer');
+    // محرك استيعاب الأسئلة الحرة للزوار (Smart Intent Engine)
+    function handleCustomQuestion(e) {
+      e.preventDefault();
+      playClick();
+      const input = document.getElementById('concierge-custom-input');
+      const rawText = input.value.trim();
+      if (!rawText) return;
+      input.value = '';
+
+      const q = rawText.toLowerCase();
+
+      // 1. الغسيل، الماء، الحرارة، المتانة
+      if (q.includes('غسيل') || q.includes('غسل') || q.includes('ماء') || q.includes('حرارة') || q.includes('كوي') || q.includes('يخرب') || q.includes('تلف')) {
+        deliverConciergeResponse(
+          'لا تقلق إطلاقاً؛ شريحة <strong>NFC</strong> مغلفة بطبقة عزل صناعية مقاومة للماء والغسيل ودرجات الحرارة العالية، ومثبتة باحترافية داخل نسيج السدو لتدوم طوال عمر القطعة.',
+          'لا تقلق إطلاقاً.. شريحة إن إف سي مغلفة بطبقة عزل صناعية مقاومة للماء والغسيل ودرجات الحرارة العالية، ومثبتة باحترافية داخل نسيج السدو لتدوم طوال عمر القطعة.'
+        );
+      }
+      // 2. التوافق مع الجوالات (آيفون / أندرويد / تطبيق)
+      else if (q.includes('ايفون') || q.includes('آيفون') || q.includes('اندرويد') || q.includes('أندرويد') || q.includes('جوال') || q.includes('تطبيق') || q.includes('برنامج') || q.includes('يشتغل')) {
+        deliverConciergeResponse(
+          'تعمل التقنية بلمسة واحدة على جميع هواتف <strong>iPhone و Android</strong> الحديثة <strong>دون الحاجة لتحميل أي تطبيق</strong>؛ بمجرد تقريب الجوال تظهر الشهادة أو البطاقة السحابية فوراً.',
+          'تعمل التقنية بلمسة واحدة على جميع هواتف آيفون وأندرويد الحديثة دون الحاجة لتحميل أي تطبيق.. بمجرد تقريب الجوال تظهر الشهادة أو البطاقة السحابية فوراً.'
+        );
+      }
+      // 3. الأسعار، الجملة، الشدة، الطلبات التجارية
+      else if (q.includes('سعر') || q.includes('اسعار') || q.includes('أسعار') || q.includes('بكم') || q.includes('تكلفة') || q.includes('جملة') || q.includes('شدة') || q.includes('كمية')) {
+        deliverConciergeResponse(
+          'تعتمد الأسعار على الكمية ونوع التخصيص؛ حيث نوفر <strong>التوريد بالجملة (بالشدة)</strong> والتصميم والطباعة ودمج شرائح NFC. تواصل معنا مباشرة عبر الواتساب لتزويدك بعرض السعر المناسب لطلبك.',
+          'تعتمد الأسعار على الكمية ونوع التخصيص، حيث نوفر التوريد بالجملة والتصميم والطباعة ودمج شرائح إن إف سي. تواصل معنا مباشرة عبر الواتساب لتزويدك بعرض السعر المناسب لطلبك.'
+        );
+      }
+      // 4. القماش، الخامة، المقاسات، المصمك، الرياض
+      else if (q.includes('قماش') || q.includes('خامة') || q.includes('قطن') || q.includes('مقاس') || q.includes('بوكسي') || q.includes('مصمك') || q.includes('رياض') || q.includes('سدو')) {
+        deliverConciergeResponse(
+          'نستخدم أجود أنواع القطن الثقيل بقصّات عصرية (<strong>Boxy Fit</strong>) مع تطريز <strong>السدو</strong> الأصيل، وانطلقت المجموعة الأولى من <strong>الرياض — قصر المصمك</strong> ضمن سلسلة اكتشف السعودية.',
+          'نستخدم أجود أنواع القطن الثقيل بقصات عصرية مع تطريز السدو الأصيل، وانطلقت المجموعة الأولى من الرياض قصر المصمك ضمن سلسلة اكتشف السعودية.'
+        );
+      }
+      // 5. التطبيقات الأربعة (سمارت باس، رحالة، ملاعب، مقاهي)
+      else if (q.includes('تطبيق') || q.includes('بطاقة') || q.includes('بطائق') || q.includes('منيو') || q.includes('مقهى') || q.includes('كافيه') || q.includes('ملعب') || q.includes('رحالة') || q.includes('سمارت')) {
+        deliverConciergeResponse(
+          'لدينا <strong>4 أنظمة بطاقات ذكية حية</strong> يمكنك تجربتها من قسم البطائق الذكية: <strong>Smart-Pass</strong> للأعمال، <strong>Traveler-Chronicle</strong> للرحّالة، <strong>Matchday</strong> للملاعب، و<strong>Namq.cafe</strong> للمقاهي.',
+          'لدينا أربعة أنظمة بطاقات ذكية حية يمكنك تجربتها من قسم البطائق الذكية: سمارت باس للأعمال، وترافلر كرونيكل للرحالة، وماتش داي للملاعب، ونمق كافيه للمقاهي.'
+        );
+      }
+      // 6. التواصل، الموقع، الرقم، من أنت
+      else if (q.includes('تواصل') || q.includes('رقم') || q.includes('واتس') || q.includes('موقع') || q.includes('وين') || q.includes('نبيل') || q.includes('من انت')) {
+        deliverConciergeResponse(
+          'أنا المساعد الذكي لمنظومة <strong>NAMER-IO</strong> للمبتكر <strong>نبيل النمر</strong> في الرياض. يمكنك التواصل الفوري عبر الواتساب على <strong>0502777884</strong> أو <strong>0560564719</strong>.',
+          'أنا المساعد الذكي لمنظومة نامر آي أو للمبتكر نبيل النمر في الرياض. يمكنك التواصل الفوري عبر الواتساب من الأزرار الظاهرة أسفل النافذة.'
+        );
+      }
+      // 7. أي سؤال خاص آخر: رد ترحيبي ذكي + زر واتساب جاهز يحمل سؤال الزائر
+      else {
+        const encodedQ = encodeURIComponent(`السلام عليكم أخ نبيل، لدي استفسار عبر مساعد NAMER-IO الذكي:\n"${rawText}"`);
+        deliverConciergeResponse(
+          `سؤال رائع! بخصوص استفسارك: <em>"${rawText}"</em> — يسعدني تحويلك مباشرة للمطور <strong>نبيل النمر</strong> للرد الدقيق وتقديم الاستشارة المناسبة:<br><a href="https://wa.me/966502777884?text=${encodedQ}" target="_blank" class="inline-block mt-2 px-3 py-1.5 rounded-lg gold-btn font-black text-[11px]">إرسال سؤالك مباشرة للواتساب ↗</a>`,
+          'سؤال رائع.. يسعدني تحويل استفسارك مباشرة للمطور نبيل النمر عبر زر الواتساب الظاهر أمامك للرد الدقيق وتقديم الاستشارة المناسبة.'
+        );
       }
     }
 
@@ -1375,6 +1484,12 @@
         document.getElementById('specs-fashion').classList.remove('hidden');
         document.getElementById('specs-cards').classList.add('hidden');
 
+        // تحديث أسئلة المساعد الذكي لتناسب قسم الأزياء
+        document.getElementById('concierge-mode-badge').textContent = 'FASHION AI MODE';
+        document.getElementById('concierge-questions-fashion').classList.remove('hidden');
+        document.getElementById('concierge-questions-cards').classList.add('hidden');
+        document.getElementById('concierge-reply').innerHTML = 'أهلاً بك في قسم <strong>الأزياء المدمجة بـ NFC</strong>! اختر سؤالاً جاهزاً أو اكتب سؤالك الخاص في الأسفل وسأجيبك فوراً:';
+
         document.getElementById('detail-title').textContent = 'مجموعة اكتشف السعودية — انطلاقاً من الرياض';
         document.getElementById('detail-desc').textContent = 'أول ابتكار يدمج بطاقة NFC ذكية داخل نسيج السدو في الملابس الرجالية؛ برؤية تسويقية تمتد لـ 25 عاماً لتوثيق الهوية السعودية عبر معالم المملكة كافة، بدءاً من قصر المصمك في الرياض.';
         document.getElementById('modal-edition').textContent = 'اكتشف السعودية — الرياض (المصمك)';
@@ -1396,6 +1511,12 @@
         document.getElementById('card-preview-cards').classList.remove('hidden');
         document.getElementById('specs-fashion').classList.add('hidden');
         document.getElementById('specs-cards').classList.remove('hidden');
+
+        // تحديث أسئلة المساعد الذكي لتناسب قسم البطائق الذكية
+        document.getElementById('concierge-mode-badge').textContent = 'SMART-CARDS AI MODE';
+        document.getElementById('concierge-questions-fashion').classList.add('hidden');
+        document.getElementById('concierge-questions-cards').classList.remove('hidden');
+        document.getElementById('concierge-reply').innerHTML = 'أهلاً بك في قسم <strong>البطائق الذكية والحلول</strong>! اختر سؤالاً جاهزاً أو اكتب سؤالك الخاص في الأسفل وسأجيبك فوراً:';
 
         document.getElementById('detail-title').textContent = 'البطائق الذكية وحلول التوثيق التفاعلي (NFC)';
         document.getElementById('detail-desc').textContent = 'نماذج حية منفذة لبطاقات الأعمال الذكية (Smart-Pass)، سجل الرحّالة التفاعلي (Traveler-Chronicle)، بطاقات الملاعب (Matchday)، ومنيو الضيافة (Namq Cafe) بواجهة سحابية فورية.';
