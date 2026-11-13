@@ -46,6 +46,36 @@
       pointer-events: none;
     }
 
+    /* تأثير تموّجات الماء الضوئية عند لمس الشاشة (Water Ripple) */
+    .water-ripple-ring {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(0.1);
+      border: 1.5px solid rgba(0, 243, 255, 0.85);
+      box-shadow: 0 0 14px rgba(0, 243, 255, 0.5), inset 0 0 8px rgba(212, 175, 55, 0.35);
+      z-index: 9999;
+      animation: waterRippleExpand 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .water-ripple-ring.gold-ring {
+      border-color: rgba(212, 175, 55, 0.75);
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.45);
+    }
+    @keyframes waterRippleExpand {
+      0% {
+        width: 12px;
+        height: 12px;
+        opacity: 0.95;
+        transform: translate(-50%, -50%) scale(0.2);
+      }
+      100% {
+        width: 150px;
+        height: 150px;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.25);
+      }
+    }
+
     /* شاشة الدخول البيومترية التفاعلية */
     #boot-screen {
       position: fixed;
@@ -89,10 +119,10 @@
       border-radius: 99px;
       transition: height 0.15s ease;
     }
-    .speaking .voice-bar:nth-child(1) { animation: voiceWave 0.5s infinite 0.0s; }
-    .speaking .voice-bar:nth-child(2) { animation: voiceWave 0.5s infinite 0.15s; background: #d4af37; }
-    .speaking .voice-bar:nth-child(3) { animation: voiceWave 0.5s infinite 0.3s; }
-    .speaking .voice-bar:nth-child(4) { animation: voiceWave 0.5s infinite 0.1s; background: #d4af37; }
+    .speaking .voice-bar:nth-child(1) { animation: voiceWave 0.45s infinite 0.0s; }
+    .speaking .voice-bar:nth-child(2) { animation: voiceWave 0.45s infinite 0.15s; background: #d4af37; }
+    .speaking .voice-bar:nth-child(3) { animation: voiceWave 0.45s infinite 0.3s; }
+    .speaking .voice-bar:nth-child(4) { animation: voiceWave 0.45s infinite 0.1s; background: #d4af37; }
 
     /* الحاوية الرئيسية */
     .spatial-deck {
@@ -139,7 +169,7 @@
     .hud-bl { bottom: 10px; left: 10px; border-bottom: 2px solid; border-left: 2px solid; border-bottom-left-radius: 8px; }
     .hud-br { bottom: 10px; right: 10px; border-bottom: 2px solid; border-right: 2px solid; border-bottom-right-radius: 8px; }
 
-    /* إطارات العرض الطولية 9:16 */
+    /* إطارات العرض الطولية 9:16 الصافية */
     .holo-viewport {
       aspect-ratio: 9 / 16;
       border-radius: 24px;
@@ -159,38 +189,6 @@
         0 20px 45px rgba(0, 0, 0, 0.8),
         0 0 38px rgba(212, 175, 55, 0.45),
         inset 0 0 18px rgba(212, 175, 55, 0.2);
-    }
-
-    /* عدسة الفحص الضوئي الذكية */
-    #nfc-loupe {
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      border: 2px solid #d4af37;
-      box-shadow: 0 0 25px rgba(0, 243, 255, 0.7), inset 0 0 20px rgba(212, 175, 55, 0.4);
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      display: none;
-      z-index: 25;
-      background: radial-gradient(circle, rgba(0, 243, 255, 0.12) 0%, rgba(2, 6, 17, 0.35) 100%);
-      backdrop-filter: contrast(1.18) brightness(1.15);
-    }
-    #nfc-loupe::after {
-      content: 'NFC TAG DETECTED';
-      position: absolute;
-      bottom: -24px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(2, 6, 17, 0.9);
-      color: #00f3ff;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 9px;
-      font-weight: bold;
-      padding: 2px 8px;
-      border-radius: 99px;
-      border: 1px solid rgba(0, 243, 255, 0.5);
-      white-space: nowrap;
     }
 
     .telemetry-pod {
@@ -305,11 +303,11 @@
       <span class="font-tech font-black text-3xl text-transparent bg-clip-text bg-gradient-to-tr from-cyan-300 to-amber-300">N</span>
     </div>
     <div class="biometric-scanner-line mb-4"></div>
-    <p dir="ltr" class="font-tech text-xs tracking-[0.25em] text-cyan-300 uppercase">NAMER-IO // SPATIAL PORTAL</p>
+    <p dir="ltr" class="font-tech text-xs tracking-[0.25em] text-cyan-300 uppercase">NAMER-IO // ALIEN-FREQUENCY LINK</p>
     <p class="text-sm text-amber-300 mt-1.5 font-bold">بوابة الأبعاد الذكية • الرياض — المملكة العربية السعودية</p>
     
     <button onclick="enterPortalWithVoice()" class="mt-6 px-7 py-3 rounded-2xl cyber-btn-primary font-black text-sm flex items-center gap-2 shadow-[0_0_30px_rgba(0,243,255,0.5)]">
-      <span>🛸 دخول البوابة بالترحيب الفضائي</span>
+      <span>🛸 فتح البوابة بالنداء الفضائي</span>
     </button>
     <button onclick="enterPortalSilent()" class="mt-3 text-xs text-slate-400 hover:text-cyan-200 underline">
       الدخول بدون صوت
@@ -319,7 +317,7 @@
   <canvas id="quantum-canvas"></canvas>
   <div class="nebula-glow"></div>
 
-  <!-- شريط القيادة العلوي (Command Header) -->
+  <!-- شريط القيادة العلوي -->
   <header class="relative z-10 w-full max-w-6xl flex flex-col lg:flex-row items-center justify-between gap-4 mb-5 p-4 md:px-6 md:py-4 rounded-3xl border border-cyan-400/40 bg-slate-950/80 backdrop-blur-xl shadow-[0_0_35px_rgba(0,243,255,0.15)]">
     
     <!-- الهوية والمفاعل الضوئي -->
@@ -341,14 +339,14 @@
 
       <!-- أزرار الصوت الفضائي والجيروسكوب -->
       <div class="flex items-center gap-1.5 shrink-0">
-        <button id="voice-replay-btn" onclick="speakSpaceGreeting()" title="إعادة الترحيب الصوتي الفضائي" class="px-2.5 py-2 rounded-xl border border-cyan-400/50 bg-slate-900/90 text-cyan-300 hover:border-amber-400 transition flex items-center gap-1.5 text-xs font-tech">
+        <button id="voice-replay-btn" onclick="speakSpaceGreeting()" title="إعادة النداء الفضائي" class="px-2.5 py-2 rounded-xl border border-cyan-400/50 bg-slate-900/90 text-cyan-300 hover:border-amber-400 transition flex items-center gap-1.5 text-xs font-tech">
           <div id="voice-visualizer" class="flex items-center gap-0.5 h-4">
             <span class="voice-bar"></span>
             <span class="voice-bar"></span>
             <span class="voice-bar"></span>
             <span class="voice-bar"></span>
           </div>
-          <span class="hidden sm:inline">AI VOICE</span>
+          <span class="hidden sm:inline">ALIEN VOICE</span>
         </button>
         <button id="gyro-btn" onclick="enableGyro()" title="تفعيل استشعار الحركة ثلاثي الأبعاد" class="px-2.5 py-2 rounded-xl border border-amber-400/40 bg-slate-900/90 text-amber-300 hover:border-amber-300 transition flex items-center gap-1 text-xs font-tech">
           <span>🧭</span>
@@ -369,7 +367,7 @@
 
   </header>
 
-  <!-- المنصة الهولوجرامية الفضائية (Spatial HUD Stage) -->
+  <!-- المنصة الهولوجرامية الفضائية -->
   <main class="relative z-10 w-full max-w-6xl my-auto">
     <div id="hud-container" class="spatial-deck p-3.5 sm:p-5 md:p-8">
       
@@ -452,24 +450,21 @@
           </div>
         </div>
 
-        <!-- العمود الثاني (9:16) مع عدسة الفحص الضوئي الذكية -->
+        <!-- العمود الثاني (9:16) -->
         <div class="lg:col-span-4 flex flex-col gap-3.5">
           <div id="frame-2" onclick="selectItem(1)" class="holo-viewport tilt-card group">
             
-            <!-- محتوى الأزياء + عدسة الفحص الضوئي -->
-            <div id="fashion-slot-2" class="w-full h-full relative" onmousemove="moveLoupe(event)" ontouchmove="moveLoupeTouch(event)" onmouseleave="hideLoupe()" ontouchend="hideLoupe()">
+            <!-- محتوى الأزياء -->
+            <div id="fashion-slot-2" class="w-full h-full relative">
               <div class="absolute top-3.5 inset-x-3.5 z-20 flex justify-between items-center text-xs text-white bg-slate-950/65 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-cyan-400/30">
                 <span id="view-badge" class="font-bold">التصميم الأمامي</span>
                 <button onclick="toggleShirtSide(event)" class="text-slate-950 font-black gold-btn px-3 py-0.5 rounded-full text-xs">قلب التصميم ↻</button>
               </div>
 
-              <!-- عدسة التكبير الضوئي لنسيج السدو وبطاقة NFC -->
-              <div id="nfc-loupe"></div>
-
               <img id="media-img-2" src="model-front.png" alt="مجموعة اكتشف السعودية - الرياض قصر المصمك" class="w-full h-full object-cover transition-all duration-500 select-none">
 
               <div class="absolute bottom-3.5 inset-x-3.5 z-20 bg-slate-950/80 backdrop-blur-md border border-cyan-500/40 rounded-2xl p-3 flex items-center justify-between">
-                <span class="text-xs sm:text-sm text-amber-300 font-bold" id="frame-2-label">مرّر إصبعك للفحص الضوئي للسدو</span>
+                <span class="text-xs sm:text-sm text-amber-300 font-bold" id="frame-2-label">البداية من الرياض — قصر المصمك</span>
                 <span dir="ltr" class="font-tech text-xs text-cyan-300">24.6311° N</span>
               </div>
             </div>
@@ -624,7 +619,7 @@
     <div class="holo-emitter-base w-4/5 mx-auto mt-1"></div>
   </main>
 
-  <!-- رادار "اكتشف السعودية" التفاعلي (KSA Interactive Radar) -->
+  <!-- رادار "اكتشف السعودية" التفاعلي -->
   <section class="relative z-10 w-full max-w-6xl mt-6 p-4 md:p-6 rounded-3xl border border-cyan-500/35 bg-slate-950/80 backdrop-blur-xl shadow-lg">
     <div class="flex flex-col md:flex-row items-center justify-between gap-5">
       
@@ -708,15 +703,15 @@
     </div>
 
     <div id="concierge-reply" class="bg-slate-900/90 border border-cyan-500/30 rounded-2xl p-3.5 text-xs leading-relaxed text-cyan-100 mb-3 min-h-[75px]">
-      أهلاً بك في بوابة <strong>نبيل النمر (NAMER-IO)</strong>! اختر أحد الأسئلة السريعة أدناه للتعرف على ابتكاراتنا أو طلب تنفيذ مشروعك:
+      أهلاً بك في منظومة <strong>NAMER-IO</strong>! اختر أحد الأسئلة التقنية والتعريفية أدناه:
     </div>
 
     <div class="space-y-1.5">
       <button onclick="askConcierge('fashion')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-amber-300 font-bold transition">
         • كيف تعمل بطاقة NFC المدمجة في الملابس؟
       </button>
-      <button onclick="askConcierge('exp')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-cyan-200 font-bold transition">
-        • ما هي خبرة نبيل النمر في السوق؟
+      <button onclick="askConcierge('tech')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-cyan-200 font-bold transition">
+        • ما هي التقنيات والمعايير الهندسية في بطاقات NFC؟
       </button>
       <button onclick="askConcierge('order')" class="w-full text-right text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3 py-2 rounded-xl text-emerald-300 font-bold transition">
         • كيف أطلب بطاقة ذكية أو استشارة لمشروعي؟
@@ -768,6 +763,24 @@
     let audioEnabled = true;
     let audioCtx = null;
 
+    // تأثير تموّجات الماء الضوئية (Water-Ripple) عند أي لمسة أو نقرة على الشاشة
+    function spawnWaterRipple(x, y) {
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+          const ring = document.createElement('div');
+          ring.className = 'water-ripple-ring' + (i === 1 ? ' gold-ring' : '');
+          ring.style.left = x + 'px';
+          ring.style.top = y + 'px';
+          document.body.appendChild(ring);
+          setTimeout(() => ring.remove(), 1200);
+        }, i * 130);
+      }
+    }
+
+    document.addEventListener('pointerdown', (e) => {
+      spawnWaterRipple(e.clientX, e.clientY);
+    });
+
     function initAudio() {
       if (!audioCtx) {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -778,49 +791,71 @@
       }
     }
 
-    // مؤثر صوتي كوني عميق (Cosmic Space Portal Sound)
-    function playCosmicPortalSound() {
+    // تخليق صوت فضائي لكائن من المستقبل (Alien Sci-Fi Vocal & Cosmic Synthesis)
+    function playAlienVoiceSynth() {
       if (!audioEnabled) return;
       try {
         initAudio();
         if (!audioCtx) return;
         const now = audioCtx.currentTime;
 
-        // موجة فضائية عميقة (Deep Warp Drone)
         const subOsc = audioCtx.createOscillator();
         const subGain = audioCtx.createGain();
-        subOsc.type = 'sine';
-        subOsc.frequency.setValueAtTime(65, now);
-        subOsc.frequency.exponentialRampToValueAtTime(140, now + 0.8);
-        subOsc.frequency.exponentialRampToValueAtTime(55, now + 2.2);
+        subOsc.type = 'sawtooth';
+        subOsc.frequency.setValueAtTime(52, now);
+        subOsc.frequency.exponentialRampToValueAtTime(115, now + 1.1);
+        subOsc.frequency.exponentialRampToValueAtTime(42, now + 3.8);
+
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(280, now);
+        filter.frequency.exponentialRampToValueAtTime(650, now + 1.2);
+        filter.frequency.exponentialRampToValueAtTime(180, now + 3.8);
+
         subGain.gain.setValueAtTime(0.01, now);
-        subGain.gain.linearRampToValueAtTime(0.14, now + 0.4);
-        subGain.gain.exponentialRampToValueAtTime(0.001, now + 2.3);
-        subOsc.connect(subGain);
+        subGain.gain.linearRampToValueAtTime(0.12, now + 0.5);
+        subGain.gain.exponentialRampToValueAtTime(0.001, now + 4.0);
+
+        subOsc.connect(filter);
+        filter.connect(subGain);
         subGain.connect(audioCtx.destination);
         subOsc.start(now);
-        subOsc.stop(now + 2.3);
+        subOsc.stop(now + 4.0);
 
-        // رنين بلوري فضائي (Cosmic Shimmer Chimes)
-        [440, 554.37, 659.25, 880, 1108.73].forEach((freq, i) => {
+        const alienNotes = [320, 480, 390, 620, 510, 740, 430, 880];
+        alienNotes.forEach((freq, i) => {
           const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
+          const lfo = audioCtx.createOscillator();
+          const lfoGain = audioCtx.createGain();
+          const mainGain = audioCtx.createGain();
+
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, now + i * 0.14);
-          gain.gain.setValueAtTime(0.001, now + i * 0.14);
-          gain.gain.linearRampToValueAtTime(0.055, now + i * 0.14 + 0.08);
-          gain.gain.exponentialRampToValueAtTime(0.0008, now + i * 0.14 + 0.9);
-          osc.connect(gain);
-          gain.connect(audioCtx.destination);
-          osc.start(now + i * 0.14);
-          osc.stop(now + i * 0.14 + 0.9);
+          osc.frequency.setValueAtTime(freq, now + i * 0.42);
+          osc.frequency.exponentialRampToValueAtTime(freq * 1.18, now + i * 0.42 + 0.35);
+
+          lfo.frequency.setValueAtTime(18, now + i * 0.42);
+          lfoGain.gain.setValueAtTime(28, now + i * 0.42);
+          lfo.connect(lfoGain);
+          lfoGain.connect(osc.frequency);
+
+          mainGain.gain.setValueAtTime(0.001, now + i * 0.42);
+          mainGain.gain.linearRampToValueAtTime(0.045, now + i * 0.42 + 0.08);
+          mainGain.gain.exponentialRampToValueAtTime(0.0008, now + i * 0.42 + 0.4);
+
+          osc.connect(mainGain);
+          mainGain.connect(audioCtx.destination);
+
+          osc.start(now + i * 0.42);
+          lfo.start(now + i * 0.42);
+          osc.stop(now + i * 0.42 + 0.4);
+          lfo.stop(now + i * 0.42 + 0.4);
         });
       } catch (e) {}
     }
 
-    // الصوت الترحيبي الفضائي الناطق (Space AI Voice Greeting)
+    // النداء الترحيبي الفضائي بالصيغة المعتمدة بالعربية
     function speakSpaceGreeting() {
-      playCosmicPortalSound();
+      playAlienVoiceSynth();
       const visualizer = document.getElementById('voice-visualizer');
       if (visualizer) visualizer.classList.add('speaking');
 
@@ -828,12 +863,11 @@
         try {
           window.speechSynthesis.cancel();
           const utterance = new SpeechSynthesisUtterance(
-            'مرحباً بك في بوابة الأبعاد الذكية.. نامر آي أو.. ابتكار نبيل النمر.'
+            'اتصال وارد من بُعدِ المستقبل.. أهلاً بك في منظومة نامر آي أو.. حيث تلتقي أصالة النسيج بذكاء التقنية..'
           );
           utterance.lang = 'ar-SA';
-          // ضبط التردد والسرعة لإعطاء طابع صوتي مستقبلي فضائي هادئ
-          utterance.pitch = 0.82;
-          utterance.rate = 0.92;
+          utterance.pitch = 0.55;
+          utterance.rate = 0.84;
           utterance.volume = 1.0;
 
           const voices = window.speechSynthesis.getVoices();
@@ -851,29 +885,26 @@
         } catch (e) {
           setTimeout(() => {
             if (visualizer) visualizer.classList.remove('speaking');
-          }, 2500);
+          }, 4200);
         }
       } else {
         setTimeout(() => {
           if (visualizer) visualizer.classList.remove('speaking');
-        }, 2500);
+        }, 4200);
       }
     }
 
-    // الدخول مع تفعيل الصوت الفضائي
     function enterPortalWithVoice() {
       const boot = document.getElementById('boot-screen');
       if (boot) boot.classList.add('fade-out');
       speakSpaceGreeting();
     }
 
-    // الدخول الصامت
     function enterPortalSilent() {
       const boot = document.getElementById('boot-screen');
       if (boot) boot.classList.add('fade-out');
     }
 
-    // تحميل الأصوات مسبقاً في المتصفح
     if ('speechSynthesis' in window) {
       window.speechSynthesis.onvoiceschanged = () => {
         window.speechSynthesis.getVoices();
@@ -918,36 +949,6 @@
           osc.stop(now + idx * 0.06 + 0.18);
         });
       } catch (e) {}
-    }
-
-    function moveLoupe(e) {
-      const container = document.getElementById('fashion-slot-2');
-      const loupe = document.getElementById('nfc-loupe');
-      const rect = container.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      loupe.style.display = 'block';
-      loupe.style.left = x + 'px';
-      loupe.style.top = y + 'px';
-    }
-
-    function moveLoupeTouch(e) {
-      if (!e.touches || !e.touches[0]) return;
-      const container = document.getElementById('fashion-slot-2');
-      const loupe = document.getElementById('nfc-loupe');
-      const rect = container.getBoundingClientRect();
-      const x = e.touches[0].clientX - rect.left;
-      const y = e.touches[0].clientY - rect.top;
-      if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
-        loupe.style.display = 'block';
-        loupe.style.left = x + 'px';
-        loupe.style.top = y + 'px';
-      }
-    }
-
-    function hideLoupe() {
-      const loupe = document.getElementById('nfc-loupe');
-      if (loupe) loupe.style.display = 'none';
     }
 
     function enableGyro() {
@@ -1004,8 +1005,8 @@
       const reply = document.getElementById('concierge-reply');
       if (topic === 'fashion') {
         reply.innerHTML = 'يتم دمج <strong>بطاقة NFC ذكية</strong> مقاومة للغسيل والحرارة داخل نسيج السدو المطرز؛ بمجرد تمرير الجوال عليها تفتح شهادة التوثيق السحابية وهوية القطعة فوراً بدون تطبيقات.';
-      } else if (topic === 'exp') {
-        reply.innerHTML = 'يقود المنصة <strong>نبيل النمر</strong> — اختصاصي تسويق بخبرة تمتد لأكثر من <strong>25 عاماً في مجال الملابس الرجالية</strong>، جمع فيها بين أصالة السوق السعودي وأحدث تقنيات التفاعل الرقمي.';
+      } else if (topic === 'tech') {
+        reply.innerHTML = 'نعتمد تقنية الاتصال قريب المدى بتردد <strong>13.56MHz</strong> وفق المعيار الدولي <strong>ISO/IEC 14443A</strong> باستخدام بطاقات <strong>NTAG215 و NTAG216</strong>، مع تشفير سحابي ديناميكي يعمل بلمسة واحدة على iOS و Android بدون تطبيقات.';
       } else {
         reply.innerHTML = 'يسعدنا تواصلك! يمكنك الضغط على زر <strong>"تواصل مباشر عبر الواتساب"</strong> لطلب استشارة أو تنفيذ بطاقات ذكية وأزياء تفاعلية لعلامتك التجارية.';
       }
@@ -1018,7 +1019,7 @@
         'VERSION:3.0',
         'N:النمر;نبيل;;;',
         'FN:نبيل النمر | NAMER-IO',
-        'TITLE:اختصاصي تسويق - 25 سنة في مجال الملابس الرجالية ومبتكر حلول NFC',
+        'TITLE:مبتكر ومطور تقنيات NFC المدمجة بالأزياء والأنظمة التفاعلية',
         'TEL;TYPE=CELL,VOICE:+966502777884',
         'EMAIL;TYPE=PREF,INTERNET:Ibn.alnamer@gmail.com',
         'URL:https://namer-io.github.io',
